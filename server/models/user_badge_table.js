@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'Badgeid',
       onDelete: 'CASCADE',
     });
-   Exercise_Table.belongsTo(models.User_Details, {
+   User_Badge_Table.belongsTo(models.User_Details, {
       foreignKey: 'UserId',
       onDelete: 'CASCADE',
     });
