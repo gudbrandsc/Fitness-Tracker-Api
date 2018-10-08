@@ -2,7 +2,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => 
      queryInterface.createTable('Badge_Details', {
-      Badgeid: {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,

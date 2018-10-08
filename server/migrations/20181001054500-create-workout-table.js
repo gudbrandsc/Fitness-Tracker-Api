@@ -2,7 +2,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => 
      queryInterface.createTable('Workout_table', {
-      WorkoutId: {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -24,7 +24,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'Workout_Categories',
-          key: 'CategoryId',
+          key: 'id',
           as: 'CategoryId',
         },
       },

@@ -8,14 +8,13 @@ module.exports = (sequelize, DataTypes) => {
   });
   
   Workout_table.associate = (models) => {
-    Workout_table.belongsTo(models.Workout_categories, {
-      foreignKey: 'CategoryId',
+    Workout_table.belongsTo(models.Workout_Categories, {
+      foreignKey: 'categoryid',
       onDelete: 'CASCADE',
     });
 	
 	 Workout_table.hasMany(models.Exercise_Table, {
-      foreignKey: 'WorkoutId',
-      as: 'WorkoutId',
+      foreignKey: 'workoutid',
     });
 	
   };
