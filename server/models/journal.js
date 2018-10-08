@@ -2,15 +2,15 @@
 module.exports = (sequelize, DataTypes) => {
   const Journal = sequelize.define('Journal', {
     title: {
-		type: DataTypes.String,
+		type: DataTypes.STRING,
         allowNull: false,
 	},
   });
   Journal.associate = function(models) {
     Journal.belongsTo(models.User_Details, {
-      foreignKey: 'UserId',
+      foreignKey: 'userid',
       onDelete: 'CASCADE',
     });
-  };
+  }; 
   return Journal;
 };

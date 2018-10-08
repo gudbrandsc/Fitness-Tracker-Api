@@ -29,25 +29,41 @@ module.exports = (sequelize, DataTypes) => {
 		type: DataTypes.STRING,
         allowNull: false,
     },
-	Username: {
+	UserName: {
 		type: DataTypes.STRING,
         allowNull: false,
+		validate: {
+        isUnique: function (value, next) {
+          var self = this;
+          User_Details.find({ where: { UserName: value } })
+            .then(function (user) {
+              // reject if a different user wants to use the same username
+              if (user && self.id !== user.id) {
+                return next('username already in use!');
+              }
+              return next();
+            })
+            .catch(function (err) {
+              return next(err);
+            });
+        }
+      }
     },
    });
    
   User_Details.associate = (models) => {
-    User_Details.hasMany(models.Exercise_table, {
-      foreignKey: 'UserId',
-      as: 'UserId',
+    User_Details.hasMany(models.Exercise_Table, {
+      foreignKey: 'userid',
+      //as: 'UserId',
     });
 	User_Details.hasMany(models.User_Badge_Table, {
-      foreignKey: 'UserId',
-      as: 'UserId',
+      foreignKey: 'userid',
+      //as: 'UserId',
     });
 	User_Details.hasMany(models.Journal, {
-      foreignKey: 'UserId',
-      as: 'UserId',
-    });
+      foreignKey: 'userid',
+      //as: 'UserId',
+    }); 
   };
   return User_Details;
 };

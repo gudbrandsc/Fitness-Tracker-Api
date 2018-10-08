@@ -10,8 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   
    Workout_Categories.associate = (models) => {
     Workout_Categories.hasMany(models.Workout_table, {
-      foreignKey: 'CategoryId',
-      as: 'CategoryId',
+      foreignKey: 'categoryid',
     });
   };
   return Workout_Categories;

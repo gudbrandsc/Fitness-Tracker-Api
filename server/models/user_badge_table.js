@@ -6,13 +6,13 @@ module.exports = (sequelize, DataTypes) => {
   
   User_Badge_Table.associate = function(models) {
     User_Badge_Table.belongsTo(models.Badge_Details, {
-      foreignKey: 'Badgeid',
+      foreignKey: 'badgeid',
       onDelete: 'CASCADE',
     });
    User_Badge_Table.belongsTo(models.User_Details, {
-      foreignKey: 'UserId',
+      foreignKey: 'userid',
       onDelete: 'CASCADE',
     });
-  };
+  }; 
   return User_Badge_Table;
 };

@@ -33,7 +33,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'Workout_table',
-          key: 'WorkoutId',
+          key: 'id',
           as: 'WorkoutId',
         },
       },
@@ -42,7 +42,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'User_Details',
-          key: 'Userid',
+          key: 'id',
           as: 'Userid',
         },
       },
@@ -50,5 +50,4 @@ module.exports = {
   
      down: (queryInterface /* , Sequelize */) => queryInterface.dropTable('Exercise_Tables'),
 
-  }
 };

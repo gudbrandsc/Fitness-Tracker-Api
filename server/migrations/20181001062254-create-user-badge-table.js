@@ -21,7 +21,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'Badge_Details',
-          key: 'Badgeid',
+          key: 'id',
           as: 'Badgeid',
         },
       },
@@ -30,7 +30,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'User_Details',
-          key: 'Userid',
+          key: 'id',
           as: 'Userid',
         },
       },
