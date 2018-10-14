@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
   
   Workout_table.associate = (models) => {
     Workout_table.belongsTo(models.Workout_Categories, {
-      foreignKey: 'categoryid',
+      foreignKey: 'CategoryId',
       onDelete: 'CASCADE',
     });
 	

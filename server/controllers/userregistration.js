@@ -11,7 +11,6 @@ module.exports = {
         State: req.body.State,
         Zipcode: req.body.Zipcode,
         UserName: req.body.UserName,
-        //Password : req.body.Password,
         Password: bcrypt.hashSync(req.body.Password, 8)
         // var hashedPassword = bcrypt.hashSync(req.body.password, 8);
       })
@@ -41,7 +40,7 @@ module.exports = {
       .then(user_details => {
         if (!user_details) {
           return res.status(200).send({
-            message: "Todo Not Found"
+            message: "User Not found"
           });
         }
         return user_details
