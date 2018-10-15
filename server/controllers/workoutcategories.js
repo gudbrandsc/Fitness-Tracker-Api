@@ -13,10 +13,10 @@ module.exports = {
     .findById(req.params.categoryid, {
       include: [{
         model: Workout_table,
-        as: 'workouts',
+        //as: 'Workout_table',
       }],
     })
     .then(workout_categories => res.status(200).send(workout_categories))
     .catch(error => res.status(400).send(error));
    },
-};
+}; 

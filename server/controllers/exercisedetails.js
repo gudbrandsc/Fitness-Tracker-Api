@@ -1,5 +1,5 @@
 const exercise_details = require("../models").Exercise_Table;
-
+/*
 module.exports = {
   create(req, res) {
     return exercise_details
@@ -29,4 +29,4 @@ module.exports = {
     .then(exercise_details => res.status(200).send(exercise_details))
     .catch(error => res.status(400).send(error));
    },
-}
+} */

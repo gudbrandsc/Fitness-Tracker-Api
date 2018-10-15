@@ -9,12 +9,15 @@ module.exports = app => {
       message: "Welcome to the Fitness Tracker API!"
     })
   );
-  app.get("/api/getworkouts/:categoryid", categorycontroller.retrieve);
+   
+  
   app.get("/api/user_details/:userid", usercontroller.retrieve);
   app.post("/api/userregistration", usercontroller.create);
   app.post("/api/userregistration/:userid/update", usercontroller.update);
   app.post("/api/userlogin", userlogin.login);
   app.get("/api/workoutcategories", categorycontroller.getall);
-  app.post("api/createworkout", workoutcontroller.create);
-  
+  app.get("/api/getworkouts/:categoryid", categorycontroller.retrieve);
+  app.post("/api/createworkout", workoutcontroller.create);
+  app.get("/api/getallworkouts", workoutcontroller.getall);
+  app.get("/api/getworkoutbyid/:workoutid", workoutcontroller.retrieve);
 };
