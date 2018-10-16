@@ -57,11 +57,11 @@ module.exports = (sequelize, DataTypes) => {
       //as: 'UserId',
     });
     User_Details.hasMany(models.User_Badge_Table, {
-      foreignKey: "userid"
+      foreignKey: "UserId"
       //as: 'UserId',
     });
     User_Details.hasMany(models.Journal, {
-      foreignKey: "userid"
+      foreignKey: "UserId"
       //as: 'UserId',
     });
   };

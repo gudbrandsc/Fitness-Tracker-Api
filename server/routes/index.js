@@ -2,7 +2,8 @@ const usercontroller = require("../controllers").user_details;
 const userlogin = require("../controllers").user_login;
 const categorycontroller = require("../controllers").workout_categories;
 const workoutcontroller = require("../controllers").workout_details;
-const exercisecontroller= require("../controllers").exercise_details;
+const exercisecontroller = require("../controllers").exercise_details;
+const journalcontroller = require("../controllers").journal_details;
 
 module.exports = app => {
   app.get("/api", (req, res) =>
@@ -15,6 +16,7 @@ module.exports = app => {
   app.post("/api/userregistration", usercontroller.create);
   app.post("/api/userregistration/:userid/update", usercontroller.update);
   app.get("/api/exercisehistory/:userid", usercontroller.listexerciseforuser);
+  app.get("/api/viewjournals/:userid", usercontroller.listjournalforuser);
   app.post("/api/userlogin", userlogin.login);
   app.get("/api/workoutcategories", categorycontroller.getall);
   app.get("/api/getworkouts/:categoryid", categorycontroller.retrieve);
@@ -22,5 +24,6 @@ module.exports = app => {
   app.get("/api/getallworkouts", workoutcontroller.getall);
   app.get("/api/getworkoutbyid/:workoutid", workoutcontroller.retrieve);
   app.post("/api/newexercise", exercisecontroller.create);
-  
+  app.post("/api/createjournal", journalcontroller.create);
+
 };

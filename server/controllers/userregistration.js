@@ -1,5 +1,6 @@
 const user_details = require("../models").User_Details;
 const Exercise_Table = require("../models").Exercise_Table;
+const Journal = require("../models").Journal;
 
 module.exports = {
   create(req, res) {
@@ -68,7 +69,18 @@ module.exports = {
         model: Exercise_Table,
 	  }]
     })
-    .then(exercise_details => res.status(200).send(exercise_details))
+    .then(user_details => res.status(200).send(user_details))
+    .catch(error => res.status(400).send(error));
+   },
+   
+    listjournalforuser(req, res) {
+    return user_details
+    .findById(req.params.userid, {
+      include: [{
+        model: Journal,
+	  }]
+    })
+    .then(user_details => res.status(200).send(user_details))
     .catch(error => res.status(400).send(error));
    },
 };
