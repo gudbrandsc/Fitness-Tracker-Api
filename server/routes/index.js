@@ -17,6 +17,7 @@ module.exports = app => {
   app.post("/api/userregistration/:userid/update", usercontroller.update);
   app.get("/api/exercisehistory/:userid", usercontroller.listexerciseforuser);
   app.get("/api/viewjournals/:userid", usercontroller.listjournalforuser);
+  app.get("/api/searchuser/:name", usercontroller.listuserbyname);
   app.post("/api/userlogin", userlogin.login);
   app.get("/api/workoutcategories", categorycontroller.getall);
   app.get("/api/getworkouts/:categoryid", categorycontroller.retrieve);

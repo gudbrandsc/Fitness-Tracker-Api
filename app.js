@@ -1,6 +1,10 @@
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const Sequelize = require('sequelize');
+
+
+
 
 
 // Set up the express app
@@ -12,6 +16,7 @@ app.use(logger('dev'));
 // Parse incoming requests data (https://github.com/expressjs/body-parser)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(Sequelize);
 //app.use(bcrypt);
 
 require('./server/routes')(app);

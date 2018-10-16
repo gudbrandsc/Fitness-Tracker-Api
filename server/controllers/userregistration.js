@@ -1,6 +1,8 @@
 const user_details = require("../models").User_Details;
 const Exercise_Table = require("../models").Exercise_Table;
 const Journal = require("../models").Journal;
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = {
   create(req, res) {
@@ -82,6 +84,18 @@ module.exports = {
     })
     .then(user_details => res.status(200).send(user_details))
     .catch(error => res.status(400).send(error));
+   },
+   
+   listuserbyname(req, res) {
+	   return user_details
+	   .findAll({
+		   where: 
+			   {
+                [Op.or]: [{FirstName: req.params.name}, {LastName: req.params.name}]
+               }
+        })
+		 .then(user_details => res.status(200).send(user_details))
+         .catch(error => res.status(400).send(error));
    },
 };
 /*.find({
