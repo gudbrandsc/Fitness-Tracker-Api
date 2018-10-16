@@ -1,5 +1,4 @@
 const user_details = require("../models").User_Details;
-const bcrypt = require("bcryptjs");
 
 module.exports = {
   create(req, res) {
@@ -12,7 +11,9 @@ module.exports = {
         State: req.body.State,
         Zipcode: req.body.Zipcode,
         UserName: req.body.UserName,
+        //Password : req.body.Password,
         Password: bcrypt.hashSync(req.body.Password, 8)
+        // var hashedPassword = bcrypt.hashSync(req.body.password, 8);
       })
       .then(user_details => res.status(200).send(user_details))
       .catch(error => res.status(200).send(error));
