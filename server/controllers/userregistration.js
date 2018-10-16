@@ -1,4 +1,6 @@
 const user_details = require("../models").User_Details;
+const Exercise_Table = require("../models").Exercise_Table;
+const Journal = require("../models").Journal;
 
 module.exports = {
   create(req, res) {
@@ -11,7 +13,6 @@ module.exports = {
         State: req.body.State,
         Zipcode: req.body.Zipcode,
         UserName: req.body.UserName,
-        //Password : req.body.Password,
         Password: bcrypt.hashSync(req.body.Password, 8)
         // var hashedPassword = bcrypt.hashSync(req.body.password, 8);
       })
@@ -41,7 +42,7 @@ module.exports = {
       .then(user_details => {
         if (!user_details) {
           return res.status(200).send({
-            message: "Todo Not Found"
+            message: "User Not found"
           });
         }
         return user_details
@@ -59,7 +60,29 @@ module.exports = {
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));
-  }
+  },
+  
+  listexerciseforuser(req, res) {
+    return user_details
+    .findById(req.params.userid, {
+      include: [{
+        model: Exercise_Table,
+	  }]
+    })
+    .then(user_details => res.status(200).send(user_details))
+    .catch(error => res.status(400).send(error));
+   },
+   
+    listjournalforuser(req, res) {
+    return user_details
+    .findById(req.params.userid, {
+      include: [{
+        model: Journal,
+	  }]
+    })
+    .then(user_details => res.status(200).send(user_details))
+    .catch(error => res.status(400).send(error));
+   },
 };
 /*.find({
 			where: {

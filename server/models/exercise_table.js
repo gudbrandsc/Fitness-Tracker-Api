@@ -17,11 +17,11 @@ module.exports = (sequelize, DataTypes) => {
   
  Exercise_Table.associate = (models) => {
    Exercise_Table.belongsTo(models.Workout_table, {
-      foreignKey: 'workoutid',
+      foreignKey: 'WorkoutId',
       onDelete: 'CASCADE',
     });
    Exercise_Table.belongsTo(models.User_Details, {
-      foreignKey: 'userid',
+      foreignKey: 'UserId',
       onDelete: 'CASCADE',
     });
   }; 
