@@ -2,6 +2,7 @@ const user_details = require("../models").User_Details;
 const Exercise_Table = require("../models").Exercise_Table;
 const Journal = require("../models").Journal;
 const Sequelize = require('sequelize');
+const bcrypt = require('bcryptjs');
 const Op = Sequelize.Op;
 
 module.exports = {

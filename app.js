@@ -2,6 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
+//const bcrypt = require('bcryptjs');
 
 
 
