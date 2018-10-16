@@ -1,4 +1,5 @@
 const user_details = require("../models").User_Details;
+const Exercise_Table = require("../models").Exercise_Table;
 
 module.exports = {
   create(req, res) {
@@ -58,7 +59,18 @@ module.exports = {
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));
-  }
+  },
+  
+  listexerciseforuser(req, res) {
+    return user_details
+    .findById(req.params.userid, {
+      include: [{
+        model: Exercise_Table,
+	  }]
+    })
+    .then(exercise_details => res.status(200).send(exercise_details))
+    .catch(error => res.status(400).send(error));
+   },
 };
 /*.find({
 			where: {

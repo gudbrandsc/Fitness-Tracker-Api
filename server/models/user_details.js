@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User_Details.associate = models => {
     User_Details.hasMany(models.Exercise_Table, {
-      foreignKey: "userid"
+      foreignKey: "UserId"
       //as: 'UserId',
     });
     User_Details.hasMany(models.User_Badge_Table, {

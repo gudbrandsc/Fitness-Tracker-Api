@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 	
 	 Workout_table.hasMany(models.Exercise_Table, {
-      foreignKey: 'workoutid',
+      foreignKey: 'WorkoutId',
     });
 	
   };

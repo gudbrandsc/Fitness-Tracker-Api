@@ -22,6 +22,10 @@ module.exports = {
       },
       NoOfReps: {
         allowNull: false,
+        type: Sequelize.INTEGER
+      },
+	  createdAt: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
@@ -32,7 +36,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         references: {
-          model: 'Workout_table',
+          model: 'Workout_tables',
           key: 'id',
           as: 'WorkoutId',
         },
