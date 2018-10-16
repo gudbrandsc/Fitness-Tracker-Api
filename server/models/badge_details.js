@@ -9,9 +9,8 @@ module.exports = (sequelize, DataTypes) => {
 	
   Badge_Details.associate = function(models) {
 	  Badge_Details.hasMany(models.User_Badge_Table, {
-      foreignKey: 'userid',
+      foreignKey: 'BadgeId',
 	  onDelete: 'CASCADE',
-      //as: 'BadgeId',
     });
   };
   return Badge_Details;
