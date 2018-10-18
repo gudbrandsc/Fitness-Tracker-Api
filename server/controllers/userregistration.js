@@ -19,8 +19,8 @@ module.exports = {
         Password: bcrypt.hashSync(req.body.Password, 8)
         // var hashedPassword = bcrypt.hashSync(req.body.password, 8);
       })
-      .then(user_details => res.status(200).send(user_details))
-      .catch(error => res.status(200).send(error));
+      .then(user_details => res.status(201).send(user_details))
+      .catch(error => res.status(400).send(error));
   },
   retrieve(req, res) {
     return user_details
