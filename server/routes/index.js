@@ -3,8 +3,9 @@ const userlogin = require("../controllers").user_login;
 const categorycontroller = require("../controllers").workout_categories;
 const workoutcontroller = require("../controllers").workout_details;
 const exercisecontroller = require("../controllers").exercise_details;
-const journalcontroller = require("../controllers").journal_details;
 const followercontroller = require("../controllers").follower_details;
+const awardbadge = require("../controllers").award_badge;
+const userjournal = require("../controllers").user_journal;
 
 module.exports = app => {
   app.get("/api", (req, res) =>
@@ -12,7 +13,7 @@ module.exports = app => {
       message: "Welcome to the Fitness Tracker API!"
     })
   );
-   
+
   app.get("/api/user_details/:userid", usercontroller.retrieve);
   app.post("/api/userregistration", usercontroller.create);
   app.post("/api/userregistration/:userid/update", usercontroller.update);
@@ -26,8 +27,18 @@ module.exports = app => {
   app.get("/api/getallworkouts", workoutcontroller.getall);
   app.get("/api/getworkoutbyid/:workoutid", workoutcontroller.retrieve);
   app.post("/api/newexercise", exercisecontroller.create);
-  app.post("/api/createjournal", journalcontroller.create);
-  app.get("/api/createfollower/:followerid/:followingid", followercontroller.create);
+  app.get(
+    "/api/createfollower/:followerid/:followingid",
+    followercontroller.create
+  );
   app.get("/api/listfollower/:followerid", followercontroller.listfollowers);
-  app.get("/api/removefollower/:followerid/:followingid", followercontroller.destroy);
+  app.get(
+    "/api/removefollower/:followerid/:followingid",
+    followercontroller.destroy
+  );
+  app.post("/api/createbadge", awardbadge.create);
+  app.get("/api/getbadges/:userid", awardbadge.retrieve);
+  app.post("/api/awardbadge", awardbadge.awardbadge);
+  app.post("/api/appendjournal", userjournal.create);
+  app.get("/api/getjournalentries/:userid", userjournal.retrieve);
 };
