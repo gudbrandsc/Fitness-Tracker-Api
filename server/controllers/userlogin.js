@@ -1,4 +1,5 @@
 const user_details = require("../models").User_Details;
+var config = require("../config/config");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
@@ -14,9 +15,6 @@ module.exports = {
         }
       })
       .then(data => {
-        //var jsonData = JSON.stringify(data);
-        //console.log("username = " + data[data.length - 1].UserName);
-        //console.log("password = " + data[data.length - 1].Password);
         var passwordIsValid = bcrypt.compareSync(
           password,
           data[data.length - 1].Password
@@ -25,12 +23,17 @@ module.exports = {
         if (!passwordIsValid)
           return res.status(401).send({ auth: false, token: null });
 
-        var secret = "secret";
         // create the token with the secret and userId
-        var token = jwt.sign({ id: data[data.length - 1].Zipcode }, secret, {
-          expiresIn: 86400 // expires in 24 hours
-        });
-        res.status(200).send({ auth: true, token: token });
+        var token = jwt.sign(
+          { id: data[data.length - 1].Zipcode },
+          config.secret,
+          {
+            expiresIn: 86400 // expires in 24 hours
+          }
+        );
+        res
+          .status(200)
+          .send({ auth: true, token: token, userId: data[data.length - 1].id });
       })
       .catch(err => {
         console.error(err);
