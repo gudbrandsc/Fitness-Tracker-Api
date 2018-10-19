@@ -64,6 +64,14 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "UserId"
       //as: 'UserId',
     });
+	User_Details.hasMany(models.follower_table, {
+      foreignKey: "FollowerId"
+      //as: 'UserId',
+    });
+	User_Details.hasMany(models.follower_table, {
+      foreignKey: "FollowingId"
+      //as: 'UserId',
+    });
   };
   return User_Details;
 };

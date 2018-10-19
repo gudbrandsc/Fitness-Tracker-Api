@@ -4,6 +4,7 @@ const categorycontroller = require("../controllers").workout_categories;
 const workoutcontroller = require("../controllers").workout_details;
 const exercisecontroller = require("../controllers").exercise_details;
 const journalcontroller = require("../controllers").journal_details;
+const followercontroller = require("../controllers").follower_details;
 
 module.exports = app => {
   app.get("/api", (req, res) =>
@@ -26,5 +27,7 @@ module.exports = app => {
   app.get("/api/getworkoutbyid/:workoutid", workoutcontroller.retrieve);
   app.post("/api/newexercise", exercisecontroller.create);
   app.post("/api/createjournal", journalcontroller.create);
-
+  app.get("/api/createfollower/:followerid/:followingid", followercontroller.create);
+  app.get("/api/listfollower/:followerid", followercontroller.listfollowers);
+  app.get("/api/removefollower/:followerid/:followingid", followercontroller.destroy);
 };
