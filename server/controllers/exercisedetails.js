@@ -11,7 +11,7 @@ module.exports = {
 		NoOfReps: req.body.NoOfReps,
       })
       .then(exercise_details => res.status(200).send(exercise_details))
-      .catch(error => res.status(200).send(error));
+      .catch(error => res.status(400).send(error));
   },
   /*
   listexerciseforuser(req, res) {

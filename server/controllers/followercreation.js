@@ -7,7 +7,7 @@ module.exports = {
         FollowingId: req.params.followingid,
       })
       .then(follower_details => res.status(200).send(follower_details))
-      .catch(error => res.status(200).send(error));
+      .catch(error => res.status(400).send(error));
   },
   
  listfollowers(req, res) {
@@ -32,7 +32,7 @@ module.exports = {
       })
     .then(follower_details => {
       if (!follower_details) {
-        return res.status(200).send({
+        return res.status(400).send({
           message: 'Follower Not Found',
         });
       }

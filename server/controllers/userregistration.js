@@ -90,6 +90,24 @@ module.exports = {
    listuserbyname(req, res) {
 	   return user_details
 	   .findAll({
+		    where: 
+			   {
+                [Op.or]: [{FirstName: req.params.name}, {LastName: req.params.name}]
+               },
+			include: [{
+			model: follower_table,
+			where: { FollowerId: req.params.userid},
+			attributes:  [[Sequelize.literal('CASE WHEN "FollowerId" is not null THEN \'True\' ELSE \'False\' END'), 'followsNew']],
+            paranoid: false, required: false			
+			}],
+		 })
+		 .then(user_details => res.status(200).send(user_details))
+         .catch(error => res.status(400).send(error));
+   },
+   
+  /* listuserbyname(req, res) {
+	   return user_details
+	   .findAll({
 		   where: 
 			   {
                 [Op.or]: [{FirstName: req.params.name}, {LastName: req.params.name}]
@@ -97,7 +115,7 @@ module.exports = {
         })
 		 .then(user_details => res.status(200).send(user_details))
          .catch(error => res.status(400).send(error));
-   },
+   }, */
 };
 /*.find({
 			where: {
