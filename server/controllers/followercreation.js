@@ -32,7 +32,7 @@ module.exports = {
       })
     .then(follower_details => {
       if (!follower_details) {
-        return res.status(400).send({
+        return res.status(200).send({
           message: 'Follower Not Found',
         });
       }

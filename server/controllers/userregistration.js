@@ -1,8 +1,13 @@
 const user_details = require("../models").User_Details;
 const Exercise_Table = require("../models").Exercise_Table;
 const Journal = require("../models").Journal;
+const follower_table = require("../models").follower_table;
 const Sequelize = require('sequelize');
 const bcrypt = require('bcryptjs');
+const pg = require('pg');
+var pool = new pg.Pool()
+const path = require('path');
+const connectionString = process.env.DATABASE_URL || 'postgres://aaqnyekm:L4GFLLi9YRDJXcNBjKDdpvXWH1zFOdtg@pellefant.db.elephantsql.com:5432/aaqnyekm';
 const Op = Sequelize.Op;
 
 module.exports = {
@@ -86,6 +91,33 @@ module.exports = {
     .then(user_details => res.status(200).send(user_details))
     .catch(error => res.status(400).send(error));
    },
+ /*  
+    listuserbyname(req, res) {
+		const results = [];
+	    const data = { name : req.params.name, userid : req.params.userid };
+	    pool.connect(connectionString, (err, client, done) => {
+	    var count = 0;
+	    if(err)
+	    {
+			done();
+			console.log(err);
+			return res.status(500).json({success : false, data : err});
+		}
+		
+	    const querystring = 'SELECT User_Details.*,CASE WHEN follower_tables.FollowerId = $1 then 'true' ELSE 'false' end as follows1  FROM User_Details left outer join follower_tables on FollowingId= User_Details.id where User_Details.FirstName = $2 or User_Details.LastName = $2';
+		const query1 = client.query(querystring, [data.userid, data.name]);
+		
+		query1.on('row', (row) =>
+		{
+			results.push(row);
+		});
+		
+		query1.on('end', () =>
+		{
+		return res.status(200).json(results);
+		});
+	});
+},*/
    
    listuserbyname(req, res) {
 	   return user_details
@@ -103,19 +135,7 @@ module.exports = {
 		 })
 		 .then(user_details => res.status(200).send(user_details))
          .catch(error => res.status(400).send(error));
-   },
-   
-  /* listuserbyname(req, res) {
-	   return user_details
-	   .findAll({
-		   where: 
-			   {
-                [Op.or]: [{FirstName: req.params.name}, {LastName: req.params.name}]
-               }
-        })
-		 .then(user_details => res.status(200).send(user_details))
-         .catch(error => res.status(400).send(error));
-   }, */
+   }, 
 };
 /*.find({
 			where: {
