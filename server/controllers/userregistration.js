@@ -62,7 +62,7 @@ module.exports = {
             State: req.body.State || user_details.State,
             Zipcode: req.body.Zipcode || user_details.Zipcode,
             UserName: req.body.UserName || user_details.UserName,
-            Password: req.body.Password || user_details.Password
+            Password: bcrypt.hashSync(req.body.Password, 8) || user_details.Password
           })
           .then(() => res.status(200).send(user_details)) // Send back the updated todo.
           .catch(error => res.status(400).send(error));
@@ -124,7 +124,8 @@ module.exports = {
 	   .findAll({
 		    where: 
 			   {
-                [Op.or]: [{FirstName: req.params.name}, {LastName: req.params.name}]
+                [Op.or]: [{FirstName: req.params.name}, {LastName: req.params.name}],
+			    id : { [Op.ne]: req.params.userid }
                },
 			include: [{
 			model: follower_table,
