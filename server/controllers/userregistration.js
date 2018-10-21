@@ -2,12 +2,14 @@ const user_details = require("../models").User_Details;
 const Exercise_Table = require("../models").Exercise_Table;
 const Journal = require("../models").Journal;
 const follower_table = require("../models").follower_table;
-const Sequelize = require('sequelize');
-const bcrypt = require('bcryptjs');
-const pg = require('pg');
-var pool = new pg.Pool()
-const path = require('path');
-const connectionString = process.env.DATABASE_URL || 'postgres://aaqnyekm:L4GFLLi9YRDJXcNBjKDdpvXWH1zFOdtg@pellefant.db.elephantsql.com:5432/aaqnyekm';
+const Sequelize = require("sequelize");
+const bcrypt = require("bcryptjs");
+const pg = require("pg");
+var pool = new pg.Pool();
+const path = require("path");
+const connectionString =
+  process.env.DATABASE_URL ||
+  "postgres://aaqnyekm:L4GFLLi9YRDJXcNBjKDdpvXWH1zFOdtg@pellefant.db.elephantsql.com:5432/aaqnyekm";
 const Op = Sequelize.Op;
 
 module.exports = {
@@ -62,36 +64,41 @@ module.exports = {
             State: req.body.State || user_details.State,
             Zipcode: req.body.Zipcode || user_details.Zipcode,
             UserName: req.body.UserName || user_details.UserName,
-            Password: bcrypt.hashSync(req.body.Password, 8) || user_details.Password
+            Password:
+              bcrypt.hashSync(req.body.Password, 8) || user_details.Password
           })
           .then(() => res.status(200).send(user_details)) // Send back the updated todo.
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));
   },
-  
+
   listexerciseforuser(req, res) {
     return user_details
-    .findById(req.params.userid, {
-      include: [{
-        model: Exercise_Table,
-	  }]
-    })
-    .then(user_details => res.status(200).send(user_details))
-    .catch(error => res.status(400).send(error));
-   },
-   
-    listjournalforuser(req, res) {
+      .findById(req.params.userid, {
+        include: [
+          {
+            model: Exercise_Table
+          }
+        ]
+      })
+      .then(user_details => res.status(200).send(user_details))
+      .catch(error => res.status(400).send(error));
+  },
+
+  listjournalforuser(req, res) {
     return user_details
-    .findById(req.params.userid, {
-      include: [{
-        model: Journal,
-	  }]
-    })
-    .then(user_details => res.status(200).send(user_details))
-    .catch(error => res.status(400).send(error));
-   },
- /*  
+      .findById(req.params.userid, {
+        include: [
+          {
+            model: Journal
+          }
+        ]
+      })
+      .then(user_details => res.status(200).send(user_details))
+      .catch(error => res.status(400).send(error));
+  },
+  /*  
     listuserbyname(req, res) {
 		const results = [];
 	    const data = { name : req.params.name, userid : req.params.userid };
@@ -118,25 +125,37 @@ module.exports = {
 		});
 	});
 },*/
-   
-   listuserbyname(req, res) {
-	   return user_details
-	   .findAll({
-		    where: 
-			   {
-                [Op.or]: [{FirstName: req.params.name}, {LastName: req.params.name}],
-			    id : { [Op.ne]: req.params.userid }
-               },
-			include: [{
-			model: follower_table,
-			where: { FollowerId: req.params.userid},
-			attributes:  [[Sequelize.literal('CASE WHEN "FollowerId" is not null THEN \'True\' ELSE \'False\' END'), 'followsNew']],
-            paranoid: false, required: false			
-			}],
-		 })
-		 .then(user_details => res.status(200).send(user_details))
-         .catch(error => res.status(400).send(error));
-   }, 
+
+  listuserbyname(req, res) {
+    return user_details
+      .findAll({
+        where: {
+          [Op.or]: [
+            { FirstName: { $like: req.params.name + "%" } },
+            { LastName: { $like: req.params.name + "%" } }
+          ],
+          id: { [Op.ne]: req.params.userid }
+        },
+        include: [
+          {
+            model: follower_table,
+            where: { FollowerId: req.params.userid },
+            attributes: [
+              [
+                Sequelize.literal(
+                  "CASE WHEN \"FollowerId\" is not null THEN 'True' ELSE 'False' END"
+                ),
+                "followsNew"
+              ]
+            ],
+            paranoid: false,
+            required: false
+          }
+        ]
+      })
+      .then(user_details => res.status(200).send(user_details))
+      .catch(error => res.status(400).send(error));
+  }
 };
 /*.find({
 			where: {
