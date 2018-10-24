@@ -71,5 +71,17 @@ module.exports = {
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));
-  }
+  },
+  
+  getfollowers(req, res)
+	{
+		return follower_details
+		.count({
+			where: {
+			FollowingId: req.params.followingid
+			},
+		})
+		.then(follower_details => res.status(200).send({count: follower_details}))
+		.catch(error => res.status(400).send(error));
+	},
 };
