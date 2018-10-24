@@ -41,4 +41,5 @@ module.exports = app => {
   app.post("/api/awardbadge", awardbadge.awardbadge);
   app.post("/api/appendjournal", userjournal.create);
   app.get("/api/getjournalentries/:userid", userjournal.retrieve);
+  app.get("/api/getnooffollowers/:followingid", followercontroller.getfollowers);
 };
