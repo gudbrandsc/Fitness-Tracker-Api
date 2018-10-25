@@ -4,10 +4,6 @@ const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 //const bcrypt = require('bcryptjs');
 
-
-
-
-
 // Set up the express app
 const app = express();
 
