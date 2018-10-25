@@ -23,7 +23,8 @@ module.exports = {
         State: req.body.State,
         Zipcode: req.body.Zipcode,
         UserName: req.body.UserName,
-        Password: bcrypt.hashSync(req.body.Password, 8)
+        Password: bcrypt.hashSync(req.body.Password, 8),
+		ImageUrl: req.body.ImageUrl
         // var hashedPassword = bcrypt.hashSync(req.body.password, 8);
       })
       .then(user_details => res.status(201).send(user_details))
@@ -65,7 +66,8 @@ module.exports = {
             Zipcode: req.body.Zipcode || user_details.Zipcode,
             UserName: req.body.UserName || user_details.UserName,
             Password:
-              bcrypt.hashSync(req.body.Password, 8) || user_details.Password
+              bcrypt.hashSync(req.body.Password, 8) || user_details.Password,
+			ImageUrl: req.body.ImageUrl || user_details.ImageUrl
           })
           .then(() => res.status(200).send(user_details)) // Send back the updated todo.
           .catch(error => res.status(400).send(error));
