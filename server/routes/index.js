@@ -6,6 +6,8 @@ const exercisecontroller = require("../controllers").exercise_details;
 const followercontroller = require("../controllers").follower_details;
 const awardbadge = require("../controllers").award_badge;
 const userjournal = require("../controllers").user_journal;
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
 
 module.exports = app => {
   app.get("/api", (req, res) =>
@@ -17,6 +19,7 @@ module.exports = app => {
   app.get("/api/user_details/:userid", usercontroller.retrieve);
   app.post("/api/userregistration", usercontroller.create);
   app.post("/api/userregistration/:userid/update", usercontroller.update);
+  app.post("/api/uploadfile", multipartMiddleware, usercontroller.uploadimage);
   app.get("/api/exercisehistory/:userid", usercontroller.listexerciseforuser);
   app.get("/api/viewjournals/:userid", usercontroller.listjournalforuser);
   app.get("/api/searchuser/:name/:userid", usercontroller.listuserbyname);

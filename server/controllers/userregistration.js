@@ -11,6 +11,14 @@ const connectionString =
   process.env.DATABASE_URL ||
   "postgres://aaqnyekm:L4GFLLi9YRDJXcNBjKDdpvXWH1zFOdtg@pellefant.db.elephantsql.com:5432/aaqnyekm";
 const Op = Sequelize.Op;
+const cloudinary = require('cloudinary');
+cloudinary.config({ 
+  cloud_name: 'fitnesstracker', 
+  api_key: '639324582679378', 
+  api_secret: 'q9I0Fe5f2kACdUNHbDHvfe7giME' 
+});
+
+
 
 module.exports = {
   create(req, res) {
@@ -157,6 +165,16 @@ module.exports = {
       })
       .then(user_details => res.status(200).send(user_details))
       .catch(error => res.status(400).send(error));
+  },
+  uploadimage(req, res)
+  {
+	  cloudinary.v2.uploader.upload(req.files.path, 
+      function(error, result) 
+	  {
+		  
+		res.status(200).send(result);
+		 
+	  });
   }
 };
 /*.find({
