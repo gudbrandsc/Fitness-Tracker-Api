@@ -47,6 +47,23 @@ module.exports = {
       })
       .catch(error => res.status(400).send(error));
   },
+  
+   listfollowing(req, res) {
+    return follower_details
+      .findAll({
+        where: {
+          FollowingId: req.params.userid
+        },
+        include: [
+          {
+            model: user_details,
+			
+		  }
+        ]
+      })
+      .then(follower_details => res.status(200).send(follower_details))
+      .catch(error => res.status(400).send(error));
+  },
 
   destroy(req, res) {
     return follower_details
