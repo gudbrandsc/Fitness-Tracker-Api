@@ -168,10 +168,13 @@ module.exports = {
   },
   uploadimage(req, res)
   {
-	  cloudinary.v2.uploader.upload(req.files.path, 
+	  cloudinary.v2.uploader.upload(req.files.file.path, 
       function(error, result) 
 	  {
-		  
+		  if(error)
+        {
+			res.status(200).send(error);
+		}
 		res.status(200).send(result);
 		 
 	  });
