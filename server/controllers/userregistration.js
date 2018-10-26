@@ -17,6 +17,7 @@ cloudinary.config({
   api_key: '639324582679378', 
   api_secret: 'q9I0Fe5f2kACdUNHbDHvfe7giME' 
 });
+const fs = require("fs");
 
 
 
@@ -166,18 +167,21 @@ module.exports = {
       .then(user_details => res.status(200).send(user_details))
       .catch(error => res.status(400).send(error));
   },
-  uploadimage(req, res)
+  uploadimage(req, res, next)
   {
-	  cloudinary.v2.uploader.upload(req.files.file.path, 
-      function(error, result) 
-	  {
-		  if(error)
-        {
-			res.status(200).send(error);
-		}
-		res.status(200).send(result);
-		 
-	  });
+    var buf = new Buffer(req.body.data, "base64");
+	const filename = req.body.filename;
+    fs.writeFileSync(req.body.filename,buf); 
+    console.log("file saved!");
+    cloudinary.v2.uploader.upload(req.body.filename, function(error, result) {
+      if (error) {
+        console.log(error);
+        res.status(500).send(error);
+      }
+      //console.log(result);
+      res.status(200).send(result.url);
+    });
+	fs.unlink(filename);
   }
 };
 /*.find({
