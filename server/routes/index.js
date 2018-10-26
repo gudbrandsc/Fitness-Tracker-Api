@@ -35,7 +35,6 @@ module.exports = app => {
     followercontroller.create
   );
   app.get("/api/listfollower/:followerid", followercontroller.listfollowers);
-  app.get("/api/listfollowing/:userid", followercontroller.listfollowing);
   app.get(
     "/api/removefollower/:followerid/:followingid",
     followercontroller.destroy
