@@ -6,7 +6,7 @@ const exercisecontroller = require("../controllers").exercise_details;
 const followercontroller = require("../controllers").follower_details;
 const awardbadge = require("../controllers").award_badge;
 const userjournal = require("../controllers").user_journal;
-var multipart = require('connect-multiparty');
+var multipart = require("connect-multiparty");
 var multipartMiddleware = multipart();
 
 module.exports = app => {
@@ -34,7 +34,8 @@ module.exports = app => {
     "/api/createfollower/:followerid/:followingid",
     followercontroller.create
   );
-  app.get("/api/listfollower/:followerid", followercontroller.listfollowers);
+  app.get("/api/listfollows/:followerid", followercontroller.listfollows);
+  app.get("/api/listfollowers/:followingid", followercontroller.listfollowers);
   app.get(
     "/api/removefollower/:followerid/:followingid",
     followercontroller.destroy
@@ -44,5 +45,8 @@ module.exports = app => {
   app.post("/api/awardbadge", awardbadge.awardbadge);
   app.post("/api/appendjournal", userjournal.create);
   app.get("/api/getjournalentries/:userid", userjournal.retrieve);
-  app.get("/api/getnooffollowers/:followingid", followercontroller.getfollowers);
+  app.get(
+    "/api/getnooffollowers/:followingid",
+    followercontroller.getfollowers
+  );
 };
