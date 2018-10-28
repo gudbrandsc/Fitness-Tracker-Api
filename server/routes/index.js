@@ -6,6 +6,7 @@ const exercisecontroller = require("../controllers").exercise_details;
 const followercontroller = require("../controllers").follower_details;
 const awardbadge = require("../controllers").award_badge;
 const userjournal = require("../controllers").user_journal;
+const forgottenpassword = require("../controllers").forgotten_password;
 var multipart = require("connect-multiparty");
 var multipartMiddleware = multipart();
 
@@ -49,4 +50,5 @@ module.exports = app => {
     "/api/getnooffollowers/:followingid",
     followercontroller.getfollowers
   );
+  app.post("/api/getnewpassword", forgottenpassword.passwordreset);
 };
