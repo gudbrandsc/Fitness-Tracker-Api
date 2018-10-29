@@ -15,6 +15,7 @@ module.exports = {
       )
       .catch(error => res.status(400).send(error));
   },
+
   retrieve(req, res) {
     return user_details
       .findById(req.params.userid, {
@@ -28,5 +29,28 @@ module.exports = {
         return res.status(200).send(journal_entries);
       })
       .catch(error => res.status(400).send(error));
+  },
+
+  update(req, res) {
+    var id = req.body.id;
+    var newjournalentry = req.body.journal;
+
+    return user_journal
+      .findById(id)
+      .then(journal => {
+        if (!journal) {
+          return res.status(400).send({
+            message: "Journal with id does not exist"
+          });
+        }
+
+        return journal
+          .update({
+            Journal: newjournalentry
+          })
+          .then(() => res.status(200).send(journal))
+          .catch(error => res.status(400).send("error = " + error));
+      })
+      .catch(error => res.status(400).send("error = " + error));
   }
 };
