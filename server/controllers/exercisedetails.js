@@ -6,13 +6,13 @@ module.exports = {
       .create({
         WorkoutId: req.body.WorkoutId,
         UserId: req.body.UserId,
-		Weight: req.body.Weight,
-		NoOfSets: req.body.NoOfSets,
-		NoOfReps: req.body.NoOfReps,
+        Weight: req.body.Weight,
+        NoOfSets: req.body.NoOfSets,
+        NoOfReps: req.body.NoOfReps
       })
       .then(exercise_details => res.status(200).send(exercise_details))
       .catch(error => res.status(400).send(error));
-  },
+  }
   /*
   listexerciseforuser(req, res) {
     return exercise_details

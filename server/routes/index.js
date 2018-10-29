@@ -23,9 +23,12 @@ module.exports = app => {
   app.get("/api/user_details/:userid", usercontroller.retrieve);
   app.post("/api/userregistration", usercontroller.create);
   app.post("/api/userregistration/:userid/update", usercontroller.update);
-  app.post("/api/uploadfile", upload.single("image"), usercontroller.uploadimage);
+  app.post(
+    "/api/uploadfile",
+    upload.single("image"),
+    usercontroller.uploadimage
+  );
   app.get("/api/exercisehistory/:userid", usercontroller.listexerciseforuser);
-  app.get("/api/viewjournals/:userid", usercontroller.listjournalforuser);
   app.get("/api/searchuser/:name/:userid", usercontroller.listuserbyname);
   app.post("/api/userlogin", userlogin.login);
   app.get("/api/workoutcategories", categorycontroller.getall);
@@ -49,6 +52,7 @@ module.exports = app => {
   app.post("/api/awardbadge", awardbadge.awardbadge);
   app.post("/api/appendjournal", userjournal.create);
   app.get("/api/getjournalentries/:userid", userjournal.retrieve);
+  app.post("/api/updatejournal", userjournal.update);
   app.get(
     "/api/getnooffollowers/:followingid",
     followercontroller.getfollowers

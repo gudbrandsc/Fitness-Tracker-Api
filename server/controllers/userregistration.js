@@ -11,15 +11,13 @@ const connectionString =
   process.env.DATABASE_URL ||
   "postgres://aaqnyekm:L4GFLLi9YRDJXcNBjKDdpvXWH1zFOdtg@pellefant.db.elephantsql.com:5432/aaqnyekm";
 const Op = Sequelize.Op;
-const cloudinary = require('cloudinary');
-cloudinary.config({ 
-  cloud_name: 'fitnesstracker', 
-  api_key: '639324582679378', 
-  api_secret: 'q9I0Fe5f2kACdUNHbDHvfe7giME' 
+const cloudinary = require("cloudinary");
+cloudinary.config({
+  cloud_name: "fitnesstracker",
+  api_key: "639324582679378",
+  api_secret: "q9I0Fe5f2kACdUNHbDHvfe7giME"
 });
 const fs = require("fs");
-
-
 
 module.exports = {
   create(req, res) {
@@ -33,7 +31,7 @@ module.exports = {
         Zipcode: req.body.Zipcode,
         UserName: req.body.UserName,
         Password: bcrypt.hashSync(req.body.Password, 8),
-		ImageUrl: req.body.ImageUrl
+        ImageUrl: req.body.ImageUrl
         // var hashedPassword = bcrypt.hashSync(req.body.password, 8);
       })
       .then(user_details => res.status(201).send(user_details))
@@ -76,7 +74,7 @@ module.exports = {
             UserName: req.body.UserName || user_details.UserName,
             Password:
               bcrypt.hashSync(req.body.Password, 8) || user_details.Password,
-			ImageUrl: req.body.ImageUrl || user_details.ImageUrl
+            ImageUrl: req.body.ImageUrl || user_details.ImageUrl
           })
           .then(() => res.status(200).send(user_details)) // Send back the updated todo.
           .catch(error => res.status(400).send(error));
@@ -97,18 +95,6 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
-  listjournalforuser(req, res) {
-    return user_details
-      .findById(req.params.userid, {
-        include: [
-          {
-            model: Journal
-          }
-        ]
-      })
-      .then(user_details => res.status(200).send(user_details))
-      .catch(error => res.status(400).send(error));
-  },
   /*  
     listuserbyname(req, res) {
 		const results = [];
@@ -167,11 +153,10 @@ module.exports = {
       .then(user_details => res.status(200).send(user_details))
       .catch(error => res.status(400).send(error));
   },
-  uploadimage(req, res, next)
-  {
+  uploadimage(req, res, next) {
     var buf = new Buffer(req.body.data, "base64");
-	const filename = req.body.filename;
-    fs.writeFileSync(req.body.filename,buf); 
+    const filename = req.body.filename;
+    fs.writeFileSync(req.body.filename, buf);
     console.log("file saved!");
     cloudinary.v2.uploader.upload(req.body.filename, function(error, result) {
       if (error) {
@@ -181,7 +166,7 @@ module.exports = {
       //console.log(result);
       res.status(200).send(result.url);
     });
-	fs.unlink(filename);
+    fs.unlink(filename);
   }
 };
 /*.find({

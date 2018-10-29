@@ -53,8 +53,8 @@ module.exports = {
             Password: newhashedpassword
           })
           .then(() => res.status(200).send(user_details))
-          .catch(error => res.status(400).send("error 2 = " + error));
+          .catch(error => res.status(400).send("error = " + error));
       })
-      .catch(error => res.status(400).send("error1 = " + error));
+      .catch(error => res.status(400).send("error = " + error));
   }
 };
