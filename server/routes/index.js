@@ -11,6 +11,7 @@ var multipart = require("connect-multiparty");
 var multipartMiddleware = multipart();
 const multer = require("multer"); // file storing middleware
 var upload = multer({ dest: "uploads/" });
+const expensecontroller = require("../controllers").expense_details;
 
 module.exports = app => {
   app.get("/api", (req, res) =>
@@ -53,4 +54,6 @@ module.exports = app => {
     followercontroller.getfollowers
   );
   app.post("/api/getnewpassword", forgottenpassword.passwordreset);
+  app.post("/api/createexpense", expensecontroller.create);
+  app.get("/api/getexpense/:userid", expensecontroller.retrieve);
 };

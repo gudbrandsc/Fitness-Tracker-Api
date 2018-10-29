@@ -7,6 +7,7 @@ const follower_details = require("./followercreation");
 const award_badge = require("./awardbadge");
 const user_journal = require("./userjournal");
 const forgotten_password = require("./forgotpassword");
+const expense_details = require("./expensecreation");
 
 module.exports = {
   user_details,
@@ -17,5 +18,6 @@ module.exports = {
   follower_details,
   award_badge,
   user_journal,
-  forgotten_password
+  forgotten_password,
+  expense_details
 };
