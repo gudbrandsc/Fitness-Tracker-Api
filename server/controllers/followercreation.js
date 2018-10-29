@@ -33,7 +33,8 @@ module.exports = {
             FollowerId: 0,
             LastName: "",
             FirstName: "",
-            UserName: ""
+            UserName: "",
+			ImageUrl: ""
           };
           jsonTemp.FollowerId = follower_details[i].FollowerId;
           jsonTemp.FollowingId = follower_details[i].FollowingId;
@@ -41,7 +42,7 @@ module.exports = {
           jsonTemp.FirstName = follower_details[i].User_Detail.FirstName;
           jsonTemp.LastName = follower_details[i].User_Detail.LastName;
           jsonTemp.UserName = follower_details[i].User_Detail.UserName;
-
+		  jsonTemp.ImageUrl = follower_details[i].User_Detail.ImageUrl;
           responseJson.push(jsonTemp);
         }
         res.status(200).send(responseJson);
@@ -71,7 +72,8 @@ module.exports = {
             FollowerId: 0,
             LastName: "",
             FirstName: "",
-            UserName: ""
+            UserName: "",
+			ImageUrl: ""
           };
           jsonTemp.FollowerId = follower_details[i].FollowerId;
           jsonTemp.FollowingId = follower_details[i].FollowingId;
@@ -79,6 +81,7 @@ module.exports = {
           jsonTemp.FirstName = follower_details[i].follower_details.FirstName;
           jsonTemp.LastName = follower_details[i].follower_details.LastName;
           jsonTemp.UserName = follower_details[i].follower_details.UserName;
+		  jsonTemp.ImageUrl = follower_details[i].User_Detail.ImageUrl;
 
           responseJson.push(jsonTemp);
         }
