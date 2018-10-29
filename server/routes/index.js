@@ -58,6 +58,7 @@ module.exports = app => {
     followercontroller.getfollowers
   );
   app.post("/api/getnewpassword", forgottenpassword.passwordreset);
+  app.post("/api/updatepassword", forgottenpassword.updatepassword);
   app.post("/api/createexpense", expensecontroller.create);
   app.get("/api/getexpense/:userid", expensecontroller.retrieve);
 };
