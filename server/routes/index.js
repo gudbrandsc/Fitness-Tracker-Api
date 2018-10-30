@@ -48,16 +48,21 @@ module.exports = app => {
     followercontroller.destroy
   );
   app.post("/api/createbadge", awardbadge.create);
+  app.get("/api/getbadgetypes", awardbadge.getbadges);
   app.get("/api/getbadges/:userid", awardbadge.retrieve);
+  app.get("/api/deletebadge/:id", awardbadge.deletebadge);
   app.post("/api/awardbadge", awardbadge.awardbadge);
+  app.post("/api/withdrawbadge", awardbadge.withdrawbadge);
   app.post("/api/appendjournal", userjournal.create);
   app.get("/api/getjournalentries/:userid", userjournal.retrieve);
   app.post("/api/updatejournal", userjournal.update);
+  app.get("/api/removejournal/:id", userjournal.deletejournal);
   app.get(
     "/api/getnooffollowers/:followingid",
     followercontroller.getfollowers
   );
   app.post("/api/getnewpassword", forgottenpassword.passwordreset);
+  app.post("/api/updatepassword", forgottenpassword.updatepassword);
   app.post("/api/createexpense", expensecontroller.create);
   app.get("/api/getexpense/:userid", expensecontroller.retrieve);
 };

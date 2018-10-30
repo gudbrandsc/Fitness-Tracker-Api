@@ -56,5 +56,38 @@ module.exports = {
           .catch(error => res.status(400).send("error = " + error));
       })
       .catch(error => res.status(400).send("error = " + error));
+  },
+
+  updatepassword(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    return user_details
+      .find({
+        where: {
+          UserName: username
+        }
+      })
+      .then(user_details => {
+        var newhashedpassword = bcrypt.hashSync(req.body.password, 8);
+
+        if (!user_details) {
+          return res.status(400).send({
+            message: "Username with given email does not exist"
+          });
+        }
+
+        return user_details
+          .update({
+            Password: newhashedpassword
+          })
+          .then(() =>
+            res.status(200).send({
+              password: password
+            })
+          )
+          .catch(error => res.status(400).send("error = " + error));
+      })
+      .catch(error => res.status(400).send("error = " + error));
   }
 };
