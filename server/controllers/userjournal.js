@@ -52,5 +52,31 @@ module.exports = {
           .catch(error => res.status(400).send("error = " + error));
       })
       .catch(error => res.status(400).send("error = " + error));
+  },
+
+  deletejournal(req, res) {
+    return user_journal
+      .find({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then(journal_entry => {
+        if (!journal_entry) {
+          return res.status(200).send({
+            message: "Journal with given id does not exist"
+          });
+        }
+
+        return journal_entry
+          .destroy()
+          .then(() =>
+            res.status(200).send({
+              message: "Journal entry with given id was successfully removed."
+            })
+          )
+          .catch(error => res.status(400).send(error));
+      })
+      .catch(error => res.status(400).send(error));
   }
 };
