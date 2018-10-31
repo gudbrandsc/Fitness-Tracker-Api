@@ -4,7 +4,7 @@ module.exports = {
   create(req, res) {
 	var inputjsonobject = req.body;
 	var userid = inputjsonobject.userid;
-	var inputjsonarray = inputjsonobject.jsonarray
+	var inputjsonarray = inputjsonobject.workouts
 	var outputjsonarray;
 	for(var i = 0; i < inputjsonarray.length; i++)
 	{
