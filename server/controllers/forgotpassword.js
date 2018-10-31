@@ -15,9 +15,9 @@ module.exports = {
       })
       .then(user_details => {
         var newpassword = randomstring.generate(8);
+        newpassword = newpassword + "1aB@";
         var newhashedpassword = bcrypt.hashSync(newpassword, 8);
         var passwordmessage = "New password: " + newpassword;
-        newpassword = newpassword + "1aB@";
 
         if (!user_details) {
           return res.status(400).send({
