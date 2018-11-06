@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
-  up: (queryInterface, Sequelize) => 
-     queryInterface.createTable('Journals', {
+  up: (queryInterface, Sequelize) =>
+    queryInterface.createTable("Journals", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,6 +9,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       Journal: {
+        type: Sequelize.STRING
+      },
+      ImageUrl: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -19,17 +22,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-	   UserId: {
+      UserId: {
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
+        onDelete: "CASCADE",
         references: {
-          model: 'User_Details',
-          key: 'id',
-          as: 'Userid',
-        },
-      },
+          model: "User_Details",
+          key: "id",
+          as: "Userid"
+        }
+      }
     }),
-	
-    down: (queryInterface /* , Sequelize */) => queryInterface.dropTable('Journals'),
 
+  down: (queryInterface /* , Sequelize */) =>
+    queryInterface.dropTable("Journals")
 };

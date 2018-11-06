@@ -6,7 +6,8 @@ module.exports = {
     return user_journal
       .create({
         Journal: req.body.Journal,
-        UserId: req.body.UserId
+        UserId: req.body.UserId,
+        ImageUrl: req.body.ImageUrl
       })
       .then(journal_entry =>
         res
@@ -34,6 +35,7 @@ module.exports = {
   update(req, res) {
     var id = req.body.id;
     var newjournalentry = req.body.journal;
+    var imageUrl = req.body.ImageUrl;
 
     return user_journal
       .findById(id)
@@ -46,7 +48,8 @@ module.exports = {
 
         return journal
           .update({
-            Journal: newjournalentry
+            Journal: newjournalentry,
+            ImageUrl: imageUrl
           })
           .then(() => res.status(200).send(journal))
           .catch(error => res.status(400).send("error = " + error));
