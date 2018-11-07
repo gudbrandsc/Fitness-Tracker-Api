@@ -11,7 +11,7 @@ module.exports = {
       Journal: {
         type: Sequelize.STRING
       },
-      ImageUrl: {
+      imageurl: {
         type: Sequelize.STRING
       },
       createdAt: {
