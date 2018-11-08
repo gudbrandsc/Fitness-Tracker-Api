@@ -81,6 +81,7 @@ module.exports = {
       })
       .catch(error => res.status(400).send(error));
   },
+  
 
   listexerciseforuser(req, res) {
     return user_details
@@ -93,37 +94,10 @@ module.exports = {
       })
       .then(user_details => res.status(200).send(user_details))
       .catch(error => res.status(400).send(error));
-  },
+  }, 
 
-  /*  
-    listuserbyname(req, res) {
-		const results = [];
-	    const data = { name : req.params.name, userid : req.params.userid };
-	    pool.connect(connectionString, (err, client, done) => {
-	    var count = 0;
-	    if(err)
-	    {
-			done();
-			console.log(err);
-			return res.status(500).json({success : false, data : err});
-		}
-		
-	    const querystring = 'SELECT User_Details.*,CASE WHEN follower_tables.FollowerId = $1 then 'true' ELSE 'false' end as follows1  FROM User_Details left outer join follower_tables on FollowingId= User_Details.id where User_Details.FirstName = $2 or User_Details.LastName = $2';
-		const query1 = client.query(querystring, [data.userid, data.name]);
-		
-		query1.on('row', (row) =>
-		{
-			results.push(row);
-		});
-		
-		query1.on('end', () =>
-		{
-		return res.status(200).json(results);
-		});
-	});
-},*/
-
-  listuserbyname(req, res) {
+  
+listuserbyname(req, res) {
     return user_details
       .findAll({
         where: {

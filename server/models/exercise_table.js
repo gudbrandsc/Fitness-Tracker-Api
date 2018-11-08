@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
 		type: DataTypes.INTEGER,
         allowNull: false,
       },
+	  SessionId: {
+		  type: DataTypes.INTEGER,
+	  }
   });
   
  Exercise_Table.associate = (models) => {
