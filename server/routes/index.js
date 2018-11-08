@@ -37,6 +37,9 @@ module.exports = app => {
   app.get("/api/getallworkouts", workoutcontroller.getall);
   app.get("/api/getworkoutbyid/:workoutid", workoutcontroller.retrieve);
   app.post("/api/newexercise", exercisecontroller.create);
+  app.get("/api/getexercisefeed/:followerid",exercisecontroller.getexercisefeed);
+  app.get("/api/newexercisehistory/:userid",exercisecontroller.listexerciseforuser);
+  
   app.get(
     "/api/createfollower/:followerid/:followingid",
     followercontroller.create
@@ -57,6 +60,7 @@ module.exports = app => {
   app.get("/api/getjournalentries/:userid", userjournal.retrieve);
   app.post("/api/updatejournal", userjournal.update);
   app.get("/api/removejournal/:id", userjournal.deletejournal);
+  app.get("/api/getnewsfeed/:followerid",userjournal.getnewsfeed);
   app.get(
     "/api/getnooffollowers/:followingid",
     followercontroller.getfollowers
