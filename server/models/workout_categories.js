@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
 		type: DataTypes.STRING,
         allowNull: false,
 	},
+	ImageUrl: {
+		type: DataTypes.STRING,
+        allowNull: false,
+	},
   });
   
    Workout_Categories.associate = (models) => {
