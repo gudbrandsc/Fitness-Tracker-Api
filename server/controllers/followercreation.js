@@ -82,10 +82,9 @@ module.exports = {
           jsonTemp.LastName = follower_details[i].follower_details.LastName;
           jsonTemp.UserName = follower_details[i].follower_details.UserName;
 		  jsonTemp.ImageUrl = follower_details[i].User_Detail.ImageUrl;
-
           responseJson.push(jsonTemp);
-        }
-        res.status(200).send(responseJson);
+	    }
+		res.status(200).send(responseJson);
       })
       .catch(error => res.status(400).send(error));
   },
