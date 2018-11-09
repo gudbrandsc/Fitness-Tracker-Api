@@ -285,6 +285,8 @@ module.exports = {
 	   for(var j in details)
 		{
 			var jsonTemp = {
+				        username: "",
+						id: 0,
 						firstname: "",
 						lastname: "",
 						userimage: "",
@@ -296,7 +298,8 @@ module.exports = {
 						categoryurl: "",
 						createddate: ""
 					};
-					
+					jsonTemp.id = details[i].id;
+					jsonTemp.username = details[j].User_Detail.UserName;
 					jsonTemp.firstname = details[j].User_Detail.FirstName;
 			
 					jsonTemp.lastname = details[j].User_Detail.LastName;
