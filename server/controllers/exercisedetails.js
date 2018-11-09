@@ -298,7 +298,7 @@ module.exports = {
 						categoryurl: "",
 						createddate: ""
 					};
-					jsonTemp.id = details[i].id;
+					jsonTemp.id = details[j].id;
 					jsonTemp.username = details[j].User_Detail.UserName;
 					jsonTemp.firstname = details[j].User_Detail.FirstName;
 			
