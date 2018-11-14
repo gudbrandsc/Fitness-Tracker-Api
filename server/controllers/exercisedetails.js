@@ -19,7 +19,7 @@ module.exports = {
 	var initialpromise = module.exports.getmaxsessionvalue();
 	initialpromise.then(function(data)
     {
-		console.log('value after receving id' +JSON.stringify(data));
+		//console.log('value after receving id' +JSON.stringify(data));
 		for(var i in data)
 		{
 			sessionid = data[i].SessionId + 1;
