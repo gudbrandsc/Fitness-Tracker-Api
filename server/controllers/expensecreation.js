@@ -7,12 +7,20 @@ module.exports = {
       .create({
         ExpenseType: req.body.ExpenseType,
         AmountSpent: req.body.AmountSpent,
-		UserId: req.body.UserId
+		    UserId: req.body.UserId
       })
-      .then(expense_details =>
-        res
-          .status(200)
-          .send({ expenseAdded: true, expenseEntry: expense_details })
+      .then(function(expense_detailsNew) {
+         user_details.findById(req.body.UserId, {
+         include: [
+          {
+            model: expense_details
+          }
+        ]
+      })
+      .then(expense_detailsAll => {
+        return res.status(200).send(expense_detailsAll);
+      });
+      } 
       )
       .catch(error => res.status(400).send(error));
   },
