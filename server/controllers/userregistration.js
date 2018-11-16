@@ -2,6 +2,7 @@ const user_details = require("../models").User_Details;
 const Exercise_Table = require("../models").Exercise_Table;
 const Journal = require("../models").Journal;
 const follower_table = require("../models").follower_table;
+const weight = require("../models").Weight;
 const Sequelize = require("sequelize");
 const bcrypt = require("bcryptjs");
 const pg = require("pg");
@@ -20,9 +21,9 @@ cloudinary.config({
 const fs = require("fs");
 
 module.exports = {
-  create(req, res) {
-    return user_details
-      .create({
+  create(req, res) 
+  {
+     user_details.create({
         FirstName: req.body.FirstName,
         LastName: req.body.LastName,
         StreetAddress: req.body.StreetAddress,
@@ -34,12 +35,25 @@ module.exports = {
         ImageUrl: req.body.ImageUrl
         // var hashedPassword = bcrypt.hashSync(req.body.password, 8);
       })
-      .then(user_details => res.status(201).send(user_details))
+      .then(function(user_details)
+      {
+        weight.create({
+          UserId: user_details.id,
+          Weight: req.body.Weight 
+        })
+        res.status(201).send(user_details);
+      })
       .catch(error => res.status(400).send(error));
   },
   retrieve(req, res) {
     return user_details
-      .findById(req.params.userid)
+      .findById(req.params.userid, {
+        include: [
+          {
+            model: weight
+          }
+        ]
+      })
       .then(user_details => {
         if (!user_details) {
           return res.status(200).send({
@@ -50,6 +64,7 @@ module.exports = {
       })
       .catch(error => res.status(400).send(error));
   },
+
   update(req, res) {
     return user_details
       .find({
@@ -81,7 +96,29 @@ module.exports = {
       })
       .catch(error => res.status(400).send(error));
   },
+
   
+   updateweight(req, res)
+   {
+    weight.create({
+      UserId: req.body.UserId,
+      Weight: req.body.Weight 
+    })
+    .then(weight_details => res.status(200).send(weight_details))
+    .catch(error => res.status(400).send(error));
+  },
+
+  getweight(req, res)
+  {
+    weight.findAll({
+      where: {
+        UserId: req.params.userid
+      }
+      
+    })
+    .then(weight_details => res.status(200).send(weight_details))
+    .catch(error => res.status(400).send(error));
+  },
 
   listexerciseforuser(req, res) {
     return user_details

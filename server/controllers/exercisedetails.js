@@ -160,6 +160,17 @@ module.exports = {
 
             results.then(data => res.status(200).send(data));
 	});
+},
+	getanalysisexercise(req, res){
+     
+		exercise_details.findAll({
+		where: { UserId : req.params.userid, WorkoutId : req.params.workoutid }
+		})
+		.then(function(exercise_detailsNew) {
+			 res.status(200).send(exercise_detailsNew)
+		}).catch((error) => res.status(400).send(error));
+	},
+
   	
 	/*	for(var i in exercise_detailsNew)
 		{
@@ -199,7 +210,7 @@ module.exports = {
 		res.status(200).send(responseJson);
 	})
     .catch(error => res.status(400).send(error)); */
-   },
+
     
    getsessiondata(sessionid)
    {
