@@ -23,6 +23,8 @@ module.exports = app => {
   app.get("/api/user_details/:userid", usercontroller.retrieve);
   app.post("/api/userregistration", usercontroller.create);
   app.post("/api/userregistration/:userid/update", usercontroller.update);
+  app.post("/api/updateweight", usercontroller.updateweight);
+  app.get("/api/getweight/:userid", usercontroller.getweight);
   app.post(
     "/api/uploadfile",
     upload.single("image"),
@@ -46,6 +48,7 @@ module.exports = app => {
     exercisecontroller.listexerciseforuser
   );
 
+  app.get("/api/exerciseanalysis/:userid/:workoutid",exercisecontroller.getanalysisexercise);
   app.get(
     "/api/createfollower/:followerid/:followingid",
     followercontroller.create

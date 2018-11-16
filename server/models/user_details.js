@@ -79,6 +79,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "UserId"
       //as: 'UserId',
     });
+  User_Details.hasMany(models.Weight, {
+      foreignKey: "UserId"
+      //as: 'UserId',
+    });
   };
   return User_Details;
 };
