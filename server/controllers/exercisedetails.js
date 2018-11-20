@@ -307,7 +307,8 @@ module.exports = {
 						workoutname: "",
 						categoryname: "",
 						categoryurl: "",
-						createddate: ""
+						createddate: "",
+						sessionid: 0
 					};
 					jsonTemp.id = details[j].id;
 					jsonTemp.username = details[j].User_Detail.UserName;
@@ -324,6 +325,7 @@ module.exports = {
 					jsonTemp.weight = details[j].Weight;
 
 					jsonTemp.createddate = details[j].createdAt;
+					jsonTemp.sessionid = details[j].SessionId;
 			
 					jsonTemp.workoutname = details[j].Workout_table.WorkoutName;
 			
