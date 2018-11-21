@@ -1,5 +1,6 @@
 const follower_details = require("../models").follower_table;
 const user_details = require("../models").User_Details;
+const Promise = require("promise");
 
 module.exports = {
   create(req, res) {
@@ -67,7 +68,7 @@ module.exports = {
         ]
       })
       .then(function(follower_details) {
-        const responseJson = [];
+        const promiseJson = [];
 
         for (var i in follower_details) {
           var jsonTemp = {
@@ -76,7 +77,8 @@ module.exports = {
             LastName: "",
             FirstName: "",
             UserName: "",
-            ImageUrl: ""
+            ImageUrl: "",
+            FollowingFollower: ""
           };
           jsonTemp.FollowerId = follower_details[i].FollowerId;
           jsonTemp.FollowingId = follower_details[i].FollowingId;
@@ -86,11 +88,11 @@ module.exports = {
           jsonTemp.UserName = follower_details[i].follower_details.UserName;
           jsonTemp.ImageUrl = follower_details[i].follower_details.ImageUrl;
 
-          responseJson.push(jsonTemp);
+          promiseJson.push(checkIfFollowingFollower(jsonTemp));
         }
+        var results = Promise.all(promiseJson); // pass array of promises
 
-        res.status(200).send(responseJson);
-        //res.status(200).send(follower_details);
+        results.then(data => res.status(200).send(data));
       })
       .catch(error => res.status(400).send(error));
   },
@@ -133,3 +135,24 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   }
 };
+
+function checkIfFollowingFollower(jsonTemp) {
+  return new Promise(function(resolve, reject) {
+    follower_details
+      .find({
+        where: {
+          FollowerId: jsonTemp.FollowingId,
+          FollowingId: jsonTemp.FollowerId
+        }
+      })
+      .then(function(follower_details) {
+        if (follower_details !== null) {
+          jsonTemp.FollowingFollower = "true";
+        } else {
+          jsonTemp.FollowingFollower = "false";
+        }
+
+        resolve(jsonTemp);
+      });
+  });
+}
