@@ -36,7 +36,8 @@ module.exports = {
             LastName: "",
             FirstName: "",
             UserName: "",
-            ImageUrl: ""
+            ImageUrl: "",
+            FollowerFollowingYou: ""
           };
           jsonTemp.FollowerId = follower_details[i].FollowerId;
           jsonTemp.FollowingId = follower_details[i].FollowingId;
@@ -45,6 +46,7 @@ module.exports = {
           jsonTemp.LastName = follower_details[i].User_Detail.LastName;
           jsonTemp.UserName = follower_details[i].User_Detail.UserName;
           jsonTemp.ImageUrl = follower_details[i].User_Detail.ImageUrl;
+          jsonTemp.FollowerFollowingYou = "true";
           responseJson.push(jsonTemp);
         }
         res.status(200).send(responseJson);
