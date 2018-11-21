@@ -3,6 +3,7 @@ const user_details = require("../models").User_Details;
 const user_badge_table = require("../models").User_Badge_Table;
 const follower_details = require("../models").follower_table;
 const user_journal = require("../models").Journal;
+const exercise_table = require("../models").Exercise_Table;
 
 module.exports = {
   create(req, res) {
@@ -88,14 +89,7 @@ module.exports = {
         ]
       })
       .then(function(user_badges) {
-        /*
-        Retrieve only a list of badges from a user. Before doing that, check if a user has a badge using hard code. If he does, do nothing.
-        If he does not have a badge, check if he should be awarded that badge. If condition is met, award him that badge. Lastly send back a 
-        json array of badges. Should include badge id, badge name, and perhaps a small description of a badge. 
-        */
-
         // get a list of badgesIds for the user
-
         var responseJson = [];
         for (var i in user_badges) {
           var jsonTemp = {
@@ -111,20 +105,13 @@ module.exports = {
           responseJson.push(jsonTemp);
         }
 
-        /*
-        var responseJson = [];
-        for (var i in user_badges.User_Badge_Tables) {
-          var jsonTemp = {
-            BadgeId: 0
-          };
-          jsonTemp.BadgeId = user_badges.User_Badge_Tables[i].BadgeId;
-          responseJson.push(jsonTemp);
-        }
-        */
         initiationBadgeCheck(req, res, UserId, responseJson);
         socialStriverBadgeCheck(req, res, UserId, responseJson);
         superStarBadgeCheck(req, res, UserId, responseJson);
         wellnessBadgeCheck(req, res, UserId, responseJson);
+        enduranceBadgeCheck(req, res, UserId, responseJson);
+        powerBadgeCheck(req, res, UserId, responseJson);
+        hardworkerBadgeCheck(req, res, UserId, responseJson);
 
         return res.status(200).send(responseJson);
         //return res.status(200).send(user_badges);
@@ -185,7 +172,6 @@ function socialStriverBadgeCheck(req, res, UserId, responseJson) {
 
   // If user already has badge do nothing. If he does not, check if he should have it awarded.
   if (badgeExists === false) {
-    //socialStriverBadgeCheck(res, UserId, responseJson);
     var numOfFollows = 0;
 
     return follower_details
@@ -268,7 +254,7 @@ function superStarBadgeCheck(req, res, UserId, responseJson) {
         }
       })
       .catch(error => res.status(400).send("2" + error));
-  } // end of method for checking if social striver badge exists
+  }
 }
 
 function initiationBadgeCheck(req, res, UserId, responseJson) {
@@ -349,12 +335,11 @@ function wellnessBadgeCheck(req, res, UserId, responseJson) {
   } // end of method for checking if social striver badge exists
 }
 
-function wellnessBadgeCheck(req, res, UserId, responseJson) {
-  // check if badge 9 for wellness exists
+function enduranceBadgeCheck(req, res, UserId, responseJson) {
   var badgeExists = false;
   for (var i in responseJson) {
     var badgeId = responseJson[i].BadgeId;
-    if (badgeId === 9) {
+    if (badgeId === 10) {
       badgeExists = true;
       break;
     }
@@ -362,29 +347,136 @@ function wellnessBadgeCheck(req, res, UserId, responseJson) {
 
   // If user already has badge do nothing. If he does not, check if he should have it awarded.
   if (badgeExists === false) {
-    var numOfJournals = 0;
+    var numOfCardio = 0;
 
-    return user_journal
+    return exercise_table
       .findAll({
         where: {
           UserId: UserId
         }
       })
-      .then(function(journal_details) {
-        for (var i in journal_details) {
-          numOfJournals++;
+      .then(function(exercise_details) {
+        for (var i in exercise_details) {
+          if (exercise_details[i].WorkoutId === 10) {
+            // if it is equal to running
+            numOfCardio++;
+          }
         }
 
-        // If this user follows a certain amount of users, award him this badge
-        if (numOfJournals >= 8) {
+        if (numOfCardio >= 2) {
           return user_badge_table
             .create({
-              BadgeId: 9,
+              BadgeId: 10,
               UserId: UserId
             })
             .then(user_badges => {
               var jsonTemp = {
-                BadgeId: 9
+                BadgeId: 10
+              };
+              responseJson.push(jsonTemp);
+              //res.status(200).send(responseJson);
+            })
+            .catch(error => res.status(400).send("3" + error));
+        } else {
+          //res.status(200).send(responseJson);
+        }
+      })
+      .catch(error => res.status(400).send("2" + error));
+  } // end of method for checking if social striver badge exists
+}
+
+function powerBadgeCheck(req, res, UserId, responseJson) {
+  var badgeExists = false;
+  for (var i in responseJson) {
+    var badgeId = responseJson[i].BadgeId;
+    if (badgeId === 11) {
+      badgeExists = true;
+      break;
+    }
+  }
+
+  // If user already has badge do nothing. If he does not, check if he should have it awarded.
+  if (badgeExists === false) {
+    var numOfWeight = 0;
+
+    return exercise_table
+      .findAll({
+        where: {
+          UserId: UserId
+        }
+      })
+      .then(function(exercise_details) {
+        for (var i in exercise_details) {
+          if (
+            exercise_details[i].WorkoutId === 1 ||
+            exercise_details[i].WorkoutId === 2 ||
+            exercise_details[i].WorkoutId === 6 ||
+            exercise_details[i].WorkoutId === 7 ||
+            exercise_details[i].WorkoutId === 8 ||
+            exercise_details[i].WorkoutId === 9
+          ) {
+            // if it is equal to any weight exercises, workoutid = 1, 2, 6, 7, 8, and 9
+            numOfWeight++;
+          }
+        }
+
+        if (numOfWeight >= 8) {
+          return user_badge_table
+            .create({
+              BadgeId: 11,
+              UserId: UserId
+            })
+            .then(user_badges => {
+              var jsonTemp = {
+                BadgeId: 11
+              };
+              responseJson.push(jsonTemp);
+              //res.status(200).send(responseJson);
+            })
+            .catch(error => res.status(400).send("3" + error));
+        } else {
+          //res.status(200).send(responseJson);
+        }
+      })
+      .catch(error => res.status(400).send("2" + error));
+  } // end of method for checking if social striver badge exists
+}
+
+function hardworkerBadgeCheck(req, res, UserId, responseJson) {
+  var badgeExists = false;
+  for (var i in responseJson) {
+    var badgeId = responseJson[i].BadgeId;
+    if (badgeId === 12) {
+      badgeExists = true;
+      break;
+    }
+  }
+
+  // If user already has badge do nothing. If he does not, check if he should have it awarded.
+  if (badgeExists === false) {
+    var numOfSessions = 0;
+
+    return exercise_table
+      .findAll({
+        where: {
+          UserId: UserId
+        }
+      })
+      .then(function(exercise_details) {
+        for (var i in exercise_details) {
+          // how many times did user go to the gym
+          numOfSessions++;
+        }
+
+        if (numOfSessions >= 4) {
+          return user_badge_table
+            .create({
+              BadgeId: 12,
+              UserId: UserId
+            })
+            .then(user_badges => {
+              var jsonTemp = {
+                BadgeId: 12
               };
               responseJson.push(jsonTemp);
               //res.status(200).send(responseJson);
