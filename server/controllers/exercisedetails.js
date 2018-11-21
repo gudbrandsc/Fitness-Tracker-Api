@@ -238,11 +238,13 @@ module.exports = {
 				sessionid: 0,
 				firstname: "",
 				lastname: "",
+				createddate: "",
 				jsonArray: []
 				};
 				responseJson.sessionid = sessionid;
 				responseJson.firstname = details[0].User_Detail.FirstName;
 				responseJson.lastname = details[0].User_Detail.LastName;
+				responseJson.createddate = details[0].createdAt;
 				for(var i in details)
 				{
 					var jsonTemp = 
