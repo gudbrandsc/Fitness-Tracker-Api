@@ -186,7 +186,7 @@ function socialStriverBadgeCheck(req, res, UserId, responseJson) {
         }
 
         // If this user follows a certain amount of users, award him this badge
-        if (numOfFollows >= 4) {
+        if (numOfFollows >= 12) {
           return user_badge_table
             .create({
               BadgeId: 6,
@@ -235,7 +235,7 @@ function superStarBadgeCheck(req, res, UserId, responseJson) {
         }
 
         // If this user follows a certain amount of users, award him this badge
-        if (numOfFollowers >= 3) {
+        if (numOfFollowers >= 12) {
           return user_badge_table
             .create({
               BadgeId: 7,
@@ -313,7 +313,7 @@ function wellnessBadgeCheck(req, res, UserId, responseJson) {
         }
 
         // If this user follows a certain amount of users, award him this badge
-        if (numOfJournals >= 8) {
+        if (numOfJournals >= 16) {
           return user_badge_table
             .create({
               BadgeId: 9,
@@ -363,7 +363,7 @@ function enduranceBadgeCheck(req, res, UserId, responseJson) {
           }
         }
 
-        if (numOfCardio >= 2) {
+        if (numOfCardio >= 32) {
           return user_badge_table
             .create({
               BadgeId: 10,
@@ -420,7 +420,7 @@ function powerBadgeCheck(req, res, UserId, responseJson) {
           }
         }
 
-        if (numOfWeight >= 8) {
+        if (numOfWeight >= 32) {
           return user_badge_table
             .create({
               BadgeId: 11,
@@ -468,7 +468,7 @@ function hardworkerBadgeCheck(req, res, UserId, responseJson) {
           numOfSessions++;
         }
 
-        if (numOfSessions >= 4) {
+        if (numOfSessions >= 50) {
           return user_badge_table
             .create({
               BadgeId: 12,
