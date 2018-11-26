@@ -79,4 +79,8 @@ module.exports = app => {
   app.post("/api/updatepassword", forgottenpassword.updatepassword);
   app.post("/api/createexpense", expensecontroller.create);
   app.get("/api/getexpense/:userid", expensecontroller.retrieve);
+  app.get(
+    "/api/getnewexercisefeed/:followerid",
+    exercisecontroller.getnewexercisefeed
+  );
 };

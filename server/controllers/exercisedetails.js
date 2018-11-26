@@ -347,6 +347,128 @@ module.exports = {
       console.log("entered in error");
       console.log(error);
     }
+  },
+  getnewexercisefeed(req, res)
+  {
+    //get list of people you are following
+    follower_details
+      .findAll({
+        where: {
+          FollowerId: req.params.followerid
+        },
+        include: [
+          {
+            model: user_details
+          }
+        ]
+      })
+      .then(function(follower_details) {
+        console.log("Entered here");
+        const responseJsonNew = [];
+        const results = [];
+        if (follower_details.length <= 100) {
+          exercise_details
+            .findAll({
+              where: {
+                UserId: {
+                  [Op.in]: Sequelize.literal(
+                    '(Select "follower_tables"."FollowingId" from follower_tables where "follower_tables"."FollowerId" = ' +
+                      req.params.followerid +
+                      ")"
+                  )
+                }
+              },
+              attributes: [
+                [Sequelize.fn("DISTINCT", Sequelize.col("SessionId")), "SessionId"]
+              ]
+              /*include: [
+                {
+                  model: user_details,
+                  required: true
+                },
+                {
+                  model: workout_details,
+                  include: [category_details],
+                  required: true
+                }
+              ],
+              order: [["createdAt", "DESC"]],
+              limit: 50 */
+            })
+            .then(function(exercise_detailsNew) {
+              const jsonTemp = [];
+              const promisearray = [];
+              for (var i in exercise_detailsNew) {
+                promisearray.push(
+                  module.exports.getsessiondata(exercise_detailsNew[i].SessionId)
+                );
+              }
+              var results = Promise.all(promisearray); // pass array of promises
+      
+              results.then(data => res.status(200).send(data));
+            });
+            //.then(details => module.exports.formatdata(details, res))
+            //.catch(error => res.status(200).send(error));
+        } else if (
+          follower_details.length >= 100 &&
+          follower_details.length <= 200
+        ) {
+          exercise_details
+            .findAll({
+              where: {
+                UserId: {
+                  [Op.in]: Sequelize.literal(
+                    '(Select "follower_tables"."FollowingId" from follower_tables where "follower_tables"."FollowerId" = ' +
+                      req.params.followerid +
+                      ")"
+                  )
+                },
+                createdAt: {
+                  [Op.gte]: moment()
+                    .subtract(2, "days")
+                    .toDate()
+                }
+              },
+              include: [
+                {
+                  model: user_details
+                }
+              ],
+              order: [["createdAt", "DESC"]],
+              limit: 50
+            })
+            .then(details => res.status(200).send(details))
+            .catch(error => res.status(200).send(error));
+        } else {
+          exercise_details
+            .findAll({
+              where: {
+                UserId: {
+                  [Op.in]: Sequelize.literal(
+                    '(Select "follower_tables"."FollowingId" from follower_tables where "follower_tables"."FollowerId" = ' +
+                      req.params.followerid +
+                      ")"
+                  )
+                },
+                createdAt: {
+                  [Op.gte]: moment()
+                    .subtract(1, "days")
+                    .toDate()
+                }
+              },
+              include: [
+                {
+                  model: user_details
+                }
+              ],
+              order: [["createdAt", "DESC"]],
+              limit: 50
+            })
+            .then(details => res.status(200).send(details))
+            .catch(error => res.status(200).send(error));
+        }
+      })
+      .catch(error => res.status(200).send(error));
   }
   
 };
