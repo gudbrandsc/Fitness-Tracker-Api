@@ -231,6 +231,7 @@ module.exports = {
           include: [
             {
               model: workout_details,
+              include: [category_details],
               required: true
               //include: [ { model: category_details } ]
             },
@@ -245,6 +246,7 @@ module.exports = {
             sessionid: 0,
             firstname: "",
             lastname: "",
+            userimage: "",
             createddate: "",
             jsonArray: []
           };
@@ -252,6 +254,7 @@ module.exports = {
           responseJson.firstname = details[0].User_Detail.FirstName;
           responseJson.lastname = details[0].User_Detail.LastName;
           responseJson.createddate = details[0].createdAt;
+          responseJson.userimage = details[0].User_Detail.ImageUrl;
           for (var i in details) {
             var jsonTemp = {
               noofsets: 0,
@@ -259,7 +262,8 @@ module.exports = {
               weight: 0,
               workoutname: "",
               workoutid: 0,
-              cardio: ""
+              cardio: "",
+              categoryurl: ""
             };
             jsonTemp.noofsets = details[i].NoOfSets;
             jsonTemp.noofreps = details[i].NoOfReps;
@@ -272,7 +276,7 @@ module.exports = {
             } else {
               jsonTemp.cardio = "false";
             }
-
+            jsonTemp.categoryurl =details[i].Workout_table.Workout_Category.ImageUrl;
             responseJson.jsonArray.push(jsonTemp);
           }
           resolve(responseJson);
@@ -344,4 +348,5 @@ module.exports = {
       console.log(error);
     }
   }
+  
 };
