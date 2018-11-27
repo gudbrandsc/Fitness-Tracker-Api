@@ -14,89 +14,188 @@ module.exports = {
   },
 
   listfollows(req, res) {
-    // get list of people you are following
-    return follower_details
-      .findAll({
-        where: {
-          FollowerId: req.params.followerid
-        },
-        include: [
-          {
-            model: user_details
+    var followerId = req.params.followerid;
+    var userId = req.params.userid;
+
+    if (followerId === userId) {
+      // get list of people you are following
+      return follower_details
+        .findAll({
+          where: {
+            FollowerId: followerId
+          },
+          include: [
+            {
+              model: user_details
+            }
+          ]
+        })
+        .then(function(follower_details) {
+          const promiseJson = [];
+
+          for (var i in follower_details) {
+            var jsonTemp = {
+              FollowingId: 0,
+              FollowerId: 0,
+              LastName: "",
+              FirstName: "",
+              UserName: "",
+              ImageUrl: "",
+              FollowingFollower: ""
+            };
+            jsonTemp.FollowerId = follower_details[i].FollowerId;
+            jsonTemp.FollowingId = follower_details[i].FollowingId;
+
+            jsonTemp.FirstName = follower_details[i].User_Detail.FirstName;
+            jsonTemp.LastName = follower_details[i].User_Detail.LastName;
+            jsonTemp.UserName = follower_details[i].User_Detail.UserName;
+            jsonTemp.ImageUrl = follower_details[i].User_Detail.ImageUrl;
+
+            promiseJson.push(checkIfFollowingFollower(jsonTemp));
           }
-        ]
-      })
-      .then(function(follower_details) {
-        const responseJson = [];
+          var results = Promise.all(promiseJson); // pass array of promises
+          results.then(data => res.status(200).send(data));
 
-        for (var i in follower_details) {
-          var jsonTemp = {
-            FollowingId: 0,
-            FollowerId: 0,
-            LastName: "",
-            FirstName: "",
-            UserName: "",
-            ImageUrl: "",
-            FollowingFollower: ""
-          };
-          jsonTemp.FollowerId = follower_details[i].FollowerId;
-          jsonTemp.FollowingId = follower_details[i].FollowingId;
+          //res.status(200).send(follower_details);
+        })
+        .catch(error => res.status(400).send(error));
+    } else {
+      // get list of people you are following
+      return follower_details
+        .findAll({
+          where: {
+            FollowerId: userId
+          },
+          include: [
+            {
+              model: user_details
+            }
+          ]
+        })
+        .then(function(follower_details) {
+          const promiseJson = [];
 
-          jsonTemp.FirstName = follower_details[i].User_Detail.FirstName;
-          jsonTemp.LastName = follower_details[i].User_Detail.LastName;
-          jsonTemp.UserName = follower_details[i].User_Detail.UserName;
-          jsonTemp.ImageUrl = follower_details[i].User_Detail.ImageUrl;
-          jsonTemp.FollowingFollower = "true";
-          responseJson.push(jsonTemp);
-        }
-        res.status(200).send(responseJson);
-        //res.status(200).send(follower_details);
-      })
-      .catch(error => res.status(400).send(error));
+          for (var i in follower_details) {
+            var jsonTemp = {
+              FollowingId: 0,
+              FollowerId: 0,
+              LastName: "",
+              FirstName: "",
+              UserName: "",
+              ImageUrl: "",
+              FollowingFollower: ""
+            };
+            jsonTemp.FollowerId = follower_details[i].FollowerId;
+            jsonTemp.FollowingId = follower_details[i].FollowingId;
+
+            jsonTemp.FirstName = follower_details[i].User_Detail.FirstName;
+            jsonTemp.LastName = follower_details[i].User_Detail.LastName;
+            jsonTemp.UserName = follower_details[i].User_Detail.UserName;
+            jsonTemp.ImageUrl = follower_details[i].User_Detail.ImageUrl;
+
+            // check if the people that this person is following is following you
+            promiseJson.push(
+              checkIfLeadersAreFollowingYou2(jsonTemp, followerId)
+            );
+          }
+          var results = Promise.all(promiseJson); // pass array of promises
+          results.then(data => res.status(200).send(data));
+
+          //res.status(200).send(follower_details);
+        })
+        .catch(error => res.status(400).send(error));
+    }
   },
 
   listfollowers(req, res) {
-    // get list of people following you
-    return follower_details
-      .findAll({
-        where: {
-          FollowingId: req.params.followingid
-        },
-        include: [
-          {
-            model: user_details,
-            as: "follower_details"
+    var followingId = req.params.followingid;
+    var userId = req.params.userid;
+
+    if (followingId === userId) {
+      // get list of your followers with info to see if you are following them as well
+      return follower_details
+        .findAll({
+          where: {
+            FollowingId: followingId
+          },
+          include: [
+            {
+              model: user_details,
+              as: "follower_details"
+            }
+          ]
+        })
+        .then(function(follower_details) {
+          const promiseJson = [];
+
+          for (var i in follower_details) {
+            var jsonTemp = {
+              FollowingId: 0,
+              FollowerId: 0,
+              LastName: "",
+              FirstName: "",
+              UserName: "",
+              ImageUrl: "",
+              FollowingFollower: ""
+            };
+            jsonTemp.FollowerId = follower_details[i].FollowerId;
+            jsonTemp.FollowingId = follower_details[i].FollowingId;
+
+            jsonTemp.FirstName = follower_details[i].follower_details.FirstName;
+            jsonTemp.LastName = follower_details[i].follower_details.LastName;
+            jsonTemp.UserName = follower_details[i].follower_details.UserName;
+            jsonTemp.ImageUrl = follower_details[i].follower_details.ImageUrl;
+
+            promiseJson.push(checkIfFollowingFollower(jsonTemp));
           }
-        ]
-      })
-      .then(function(follower_details) {
-        const promiseJson = [];
+          var results = Promise.all(promiseJson); // pass array of promises
 
-        for (var i in follower_details) {
-          var jsonTemp = {
-            FollowingId: 0,
-            FollowerId: 0,
-            LastName: "",
-            FirstName: "",
-            UserName: "",
-            ImageUrl: "",
-            FollowingFollower: ""
-          };
-          jsonTemp.FollowerId = follower_details[i].FollowerId;
-          jsonTemp.FollowingId = follower_details[i].FollowingId;
+          results.then(data => res.status(200).send(data));
+        })
+        .catch(error => res.status(400).send(error));
+    } else {
+      // get a list of followers for the userid and see if you are following that person's followers
+      return follower_details
+        .findAll({
+          where: {
+            FollowingId: userId
+          },
+          include: [
+            {
+              model: user_details,
+              as: "follower_details"
+            }
+          ]
+        })
+        .then(function(follower_details) {
+          const promiseJson = [];
 
-          jsonTemp.FirstName = follower_details[i].follower_details.FirstName;
-          jsonTemp.LastName = follower_details[i].follower_details.LastName;
-          jsonTemp.UserName = follower_details[i].follower_details.UserName;
-          jsonTemp.ImageUrl = follower_details[i].follower_details.ImageUrl;
+          for (var i in follower_details) {
+            var jsonTemp = {
+              FollowingId: 0,
+              FollowerId: 0,
+              LastName: "",
+              FirstName: "",
+              UserName: "",
+              ImageUrl: "",
+              FollowingFollower: ""
+            };
+            jsonTemp.FollowerId = follower_details[i].FollowerId;
+            jsonTemp.FollowingId = follower_details[i].FollowingId;
 
-          promiseJson.push(checkIfFollowingFollower(jsonTemp));
-        }
-        var results = Promise.all(promiseJson); // pass array of promises
+            jsonTemp.FirstName = follower_details[i].follower_details.FirstName;
+            jsonTemp.LastName = follower_details[i].follower_details.LastName;
+            jsonTemp.UserName = follower_details[i].follower_details.UserName;
+            jsonTemp.ImageUrl = follower_details[i].follower_details.ImageUrl;
 
-        results.then(data => res.status(200).send(data));
-      })
-      .catch(error => res.status(400).send(error));
+            promiseJson.push(checkIfFollowingFollower2(jsonTemp, followingId));
+          }
+          var results = Promise.all(promiseJson); // pass array of promises
+
+          results.then(data => res.status(200).send(data));
+        })
+        .catch(error => res.status(400).send(error));
+    }
   },
 
   destroy(req, res) {
@@ -145,6 +244,48 @@ function checkIfFollowingFollower(jsonTemp) {
         where: {
           FollowerId: jsonTemp.FollowingId,
           FollowingId: jsonTemp.FollowerId
+        }
+      })
+      .then(function(follower_details) {
+        if (follower_details !== null) {
+          jsonTemp.FollowingFollower = "true";
+        } else {
+          jsonTemp.FollowingFollower = "false";
+        }
+
+        resolve(jsonTemp);
+      });
+  });
+}
+
+function checkIfFollowingFollower2(jsonTemp, followingId) {
+  return new Promise(function(resolve, reject) {
+    follower_details
+      .find({
+        where: {
+          FollowerId: followingId,
+          FollowingId: jsonTemp.FollowerId
+        }
+      })
+      .then(function(follower_details) {
+        if (follower_details !== null) {
+          jsonTemp.FollowingFollower = "true";
+        } else {
+          jsonTemp.FollowingFollower = "false";
+        }
+
+        resolve(jsonTemp);
+      });
+  });
+}
+
+function checkIfLeadersAreFollowingYou2(jsonTemp, followerId) {
+  return new Promise(function(resolve, reject) {
+    follower_details
+      .find({
+        where: {
+          FollowerId: jsonTemp.FollowingId,
+          FollowingId: followerId
         }
       })
       .then(function(follower_details) {

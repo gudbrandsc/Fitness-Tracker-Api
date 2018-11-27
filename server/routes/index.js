@@ -48,13 +48,22 @@ module.exports = app => {
     exercisecontroller.listexerciseforuser
   );
 
-  app.get("/api/exerciseanalysis/:userid/:workoutid",exercisecontroller.getanalysisexercise);
+  app.get(
+    "/api/exerciseanalysis/:userid/:workoutid",
+    exercisecontroller.getanalysisexercise
+  );
   app.get(
     "/api/createfollower/:followerid/:followingid",
     followercontroller.create
   );
-  app.get("/api/listfollows/:followerid", followercontroller.listfollows);
-  app.get("/api/listfollowers/:followingid", followercontroller.listfollowers);
+  app.get(
+    "/api/listfollows/:followerid/:userid",
+    followercontroller.listfollows
+  );
+  app.get(
+    "/api/listfollowers/:followingid/:userid",
+    followercontroller.listfollowers
+  );
   app.get(
     "/api/removefollower/:followerid/:followingid",
     followercontroller.destroy
