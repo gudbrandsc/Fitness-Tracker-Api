@@ -37,5 +37,30 @@ module.exports = {
         return res.status(200).send(expense_details);
       })
       .catch(error => res.status(400).send(error));
-  }
+  },
+  deleteexpense(req, res) {
+    return expense_details
+      .find({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then(expense_details => {
+        if (!expense_details) {
+          return res.status(200).send({
+            message: "Expense with given id does not exist"
+          });
+        }
+
+        return expense_details
+          .destroy()
+          .then(() =>
+            res.status(200).send({
+              message: "Expense entry with given id was successfully removed."
+            })
+          )
+          .catch(error => res.status(400).send(error));
+      })
+      .catch(error => res.status(400).send(error));
+  },
 };

@@ -83,4 +83,5 @@ module.exports = app => {
     "/api/getnewexercisefeed/:followerid",
     exercisecontroller.getnewexercisefeed
   );
+  app.get("/api/removeexpense/:id", expensecontroller.deleteexpense);
 };
