@@ -50,13 +50,11 @@ module.exports = {
             jsonTemp.LastName = follower_details[i].User_Detail.LastName;
             jsonTemp.UserName = follower_details[i].User_Detail.UserName;
             jsonTemp.ImageUrl = follower_details[i].User_Detail.ImageUrl;
-
-            promiseJson.push(checkIfFollowingFollower(jsonTemp));
+            jsonTemp.FollowingFollower = "true";
+            promiseJson.push(jsonTemp);
           }
-          var results = Promise.all(promiseJson); // pass array of promises
-          results.then(data => res.status(200).send(data));
 
-          //res.status(200).send(follower_details);
+          res.status(200).send(promiseJson);
         })
         .catch(error => res.status(400).send(error));
     } else {
@@ -95,7 +93,7 @@ module.exports = {
 
             // check if the people that this person is following is following you
             promiseJson.push(
-              checkIfLeadersAreFollowingYou2(jsonTemp, followerId)
+              checkIfOtherFollowsAreFollowingYou(jsonTemp, followerId)
             );
           }
           var results = Promise.all(promiseJson); // pass array of promises
@@ -238,6 +236,7 @@ module.exports = {
 };
 
 function checkIfFollowingFollower(jsonTemp) {
+  // checks if you are following the person who is following you
   return new Promise(function(resolve, reject) {
     follower_details
       .find({
@@ -259,12 +258,13 @@ function checkIfFollowingFollower(jsonTemp) {
 }
 
 function checkIfFollowingFollower2(jsonTemp, followingId) {
+  // checks if you are following someone in the list of another person's followers
   return new Promise(function(resolve, reject) {
     follower_details
       .find({
         where: {
-          FollowerId: followingId,
-          FollowingId: jsonTemp.FollowerId
+          FollowerId: followingId, // this is id of logged in user
+          FollowingId: jsonTemp.FollowerId // follower in another users list of followers
         }
       })
       .then(function(follower_details) {
@@ -279,13 +279,13 @@ function checkIfFollowingFollower2(jsonTemp, followingId) {
   });
 }
 
-function checkIfLeadersAreFollowingYou2(jsonTemp, followerId) {
+function checkIfOtherFollowsAreFollowingYou(jsonTemp, followerId) {
   return new Promise(function(resolve, reject) {
     follower_details
       .find({
         where: {
-          FollowerId: jsonTemp.FollowingId,
-          FollowingId: followerId
+          FollowerId: followerId,
+          FollowingId: jsonTemp.FollowingId
         }
       })
       .then(function(follower_details) {
