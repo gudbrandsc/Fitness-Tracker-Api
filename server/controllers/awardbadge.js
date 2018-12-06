@@ -76,7 +76,7 @@ module.exports = {
 
   retrieve(req, res) {
     const UserId = req.params.userid;
-    //return user_details
+
     user_badge_table
       .findAll({
         where: {
@@ -114,7 +114,6 @@ module.exports = {
         hardworkerBadgeCheck(req, res, UserId, responseJson);
 
         return res.status(200).send(responseJson);
-        //return res.status(200).send(user_badges);
       })
       .catch(error => res.status(400).send("1" + error));
   },
@@ -197,7 +196,6 @@ function socialStriverBadgeCheck(req, res, UserId, responseJson) {
                 BadgeId: 6
               };
               responseJson.push(jsonTemp);
-              //res.status(200).send(responseJson);
             })
             .catch(error => res.status(400).send("3" + error));
         } else {
@@ -205,7 +203,7 @@ function socialStriverBadgeCheck(req, res, UserId, responseJson) {
         }
       })
       .catch(error => res.status(400).send("2" + error));
-  } // end of method for checking if social striver badge exists
+  }
 }
 
 function superStarBadgeCheck(req, res, UserId, responseJson) {
@@ -246,7 +244,6 @@ function superStarBadgeCheck(req, res, UserId, responseJson) {
                 BadgeId: 7
               };
               responseJson.push(jsonTemp);
-              //res.status(200).send(responseJson);
             })
             .catch(error => res.status(400).send("3" + error));
         } else {
@@ -280,10 +277,9 @@ function initiationBadgeCheck(req, res, UserId, responseJson) {
           BadgeId: 8
         };
         responseJson.push(jsonTemp);
-        //res.status(200).send(responseJson);
       })
       .catch(error => res.status(400).send(error));
-  } // end of method for checking if initiation badge exists
+  }
 }
 
 function wellnessBadgeCheck(req, res, UserId, responseJson) {
@@ -312,7 +308,6 @@ function wellnessBadgeCheck(req, res, UserId, responseJson) {
           numOfJournals++;
         }
 
-        // If this user follows a certain amount of users, award him this badge
         if (numOfJournals >= 16) {
           return user_badge_table
             .create({
@@ -324,7 +319,6 @@ function wellnessBadgeCheck(req, res, UserId, responseJson) {
                 BadgeId: 9
               };
               responseJson.push(jsonTemp);
-              //res.status(200).send(responseJson);
             })
             .catch(error => res.status(400).send("3" + error));
         } else {
@@ -332,7 +326,7 @@ function wellnessBadgeCheck(req, res, UserId, responseJson) {
         }
       })
       .catch(error => res.status(400).send("2" + error));
-  } // end of method for checking if social striver badge exists
+  }
 }
 
 function enduranceBadgeCheck(req, res, UserId, responseJson) {
@@ -374,7 +368,6 @@ function enduranceBadgeCheck(req, res, UserId, responseJson) {
                 BadgeId: 10
               };
               responseJson.push(jsonTemp);
-              //res.status(200).send(responseJson);
             })
             .catch(error => res.status(400).send("3" + error));
         } else {
@@ -382,7 +375,7 @@ function enduranceBadgeCheck(req, res, UserId, responseJson) {
         }
       })
       .catch(error => res.status(400).send("2" + error));
-  } // end of method for checking if social striver badge exists
+  }
 }
 
 function powerBadgeCheck(req, res, UserId, responseJson) {
@@ -415,7 +408,6 @@ function powerBadgeCheck(req, res, UserId, responseJson) {
             exercise_details[i].WorkoutId === 8 ||
             exercise_details[i].WorkoutId === 9
           ) {
-            // if it is equal to any weight exercises, workoutid = 1, 2, 6, 7, 8, and 9
             numOfWeight++;
           }
         }
@@ -431,7 +423,6 @@ function powerBadgeCheck(req, res, UserId, responseJson) {
                 BadgeId: 11
               };
               responseJson.push(jsonTemp);
-              //res.status(200).send(responseJson);
             })
             .catch(error => res.status(400).send("3" + error));
         } else {
@@ -439,7 +430,7 @@ function powerBadgeCheck(req, res, UserId, responseJson) {
         }
       })
       .catch(error => res.status(400).send("2" + error));
-  } // end of method for checking if social striver badge exists
+  }
 }
 
 function hardworkerBadgeCheck(req, res, UserId, responseJson) {
@@ -479,7 +470,6 @@ function hardworkerBadgeCheck(req, res, UserId, responseJson) {
                 BadgeId: 12
               };
               responseJson.push(jsonTemp);
-              //res.status(200).send(responseJson);
             })
             .catch(error => res.status(400).send("3" + error));
         } else {
@@ -487,5 +477,5 @@ function hardworkerBadgeCheck(req, res, UserId, responseJson) {
         }
       })
       .catch(error => res.status(400).send("2" + error));
-  } // end of method for checking if social striver badge exists
+  }
 }
