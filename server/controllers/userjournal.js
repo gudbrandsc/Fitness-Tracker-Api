@@ -164,10 +164,14 @@ module.exports = {
 		}).then(details => res.status(200).send(details))
 	   .catch(error => res.status(200).send(error));
 	   }
-		   
-		   
-		
-		/*const tempSQL = sequelize.dialect.QueryGenerator.selectQuery(follower_details,{
+	})
+  .catch(error => res.status(200).send(error)); 
+  },
+
+  testfunctionforjournal()
+  {
+    	
+		const tempSQL = sequelize.dialect.QueryGenerator.selectQuery(follower_details,{
                        attributes: ['FollowingId'],
                        where: {
                              FollowerId: req.params.followerid
@@ -181,8 +185,8 @@ module.exports = {
        } 
        })
 	   .then(details => res.status(200).send(details))
-	   .catch(error => res.status(200).send(error)); */
-		/*pg.connect(connectionString, (err, client, done) => {
+	   .catch(error => res.status(200).send(error)); 
+		pg.connect(connectionString, (err, client, done) => {
 	    var count = 0;
 	    if(err)
 	    {
@@ -213,15 +217,13 @@ module.exports = {
           jsonTemp.FirstName = results[i].FirstName;
           jsonTemp.LastName = results[i].LastName;
           jsonTemp.UserName = results[i].UserName;
-		  jsonTemp.ImageUrl = results[i].ImageUrl;
-		  jsonTemp.Journal =  results[i].Journal;
+		      jsonTemp.ImageUrl = results[i].ImageUrl;
+		      jsonTemp.Journal =  results[i].Journal;
           responseJson.push(jsonTemp);
         }
 		return res.status(200).json(responseJson);
 		});
-	}); */
-  })
-  .catch(error => res.status(200).send(error)); 
-  } 
+	}); 
+  }
 	  
 };

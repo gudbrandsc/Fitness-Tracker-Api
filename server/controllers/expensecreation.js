@@ -2,6 +2,7 @@ const expense_details = require("../models").Expenses_Details;
 const user_details = require("../models").User_Details;
 
 module.exports = {
+  //create an expense
   create(req, res) {
     return expense_details
       .create({
@@ -25,6 +26,7 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
   retrieve(req, res) {
+    //return all the expense details
     return user_details
       .findById(req.params.userid, {
         include: [
@@ -39,6 +41,7 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
   deleteexpense(req, res) {
+    //delete a paticular expense using an id
     return expense_details
       .find({
         where: {
