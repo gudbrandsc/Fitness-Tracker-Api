@@ -7,9 +7,10 @@ const pg = require("pg");
 const Op = Sequelize.Op;
 const user_details = require("../models").User_Details;
 const Promise = require("promise");
-
+//create an exercise
 module.exports = {
   create(req, res) {
+    //get the maximum session no
     const inputjsonobject = req.body;
     const userid = inputjsonobject.userid;
     const inputjsonarray = inputjsonobject.workouts;
@@ -18,10 +19,10 @@ module.exports = {
     var sessionid = 0;
     var initialpromise = module.exports.getmaxsessionvalue();
     initialpromise.then(function(data) {
-      //console.log('value after receving id' +JSON.stringify(data));
       for (var i in data) {
         sessionid = data[i].SessionId + 1;
       }
+      //insert all the exercises for particular session
       console.log("session id after increment is" + sessionid);
       for (var i = 0; i < inputjsonarray.length; i++) {
         exercise_details
@@ -61,6 +62,7 @@ module.exports = {
         console.log("Entered here");
         const responseJsonNew = [];
         const results = [];
+        //if no of followers is less than 100 get all the exercises session wise
         if (follower_details.length <= 100) {
           exercise_details
             .findAll({
@@ -93,6 +95,7 @@ module.exports = {
           follower_details.length >= 100 &&
           follower_details.length <= 200
         ) {
+          //if no of followers is between 100 and 200 then get the posts from last 2 days
           exercise_details
             .findAll({
               where: {
@@ -174,6 +177,7 @@ module.exports = {
   },
   getanalysisexercise(req, res) {
     exercise_details
+      //get all the details for particular workout and user
       .findAll({
         where: { UserId: req.params.userid, WorkoutId: req.params.workoutid }
       })
@@ -183,46 +187,8 @@ module.exports = {
       .catch(error => res.status(400).send(error));
   },
 
-  /*	for(var i in exercise_detailsNew)
-		{
-			console.log('enetered here' +exercise_detailsNew);
-			var sessionid = exercise_detailsNew[i].SessionId;
-			exercise_details.findAll({
-		    where: { SessionId : sessionid }, 
-			include: [
-				{
-				model: workout_details,
-				required: true
-				//include: [ { model: category_details } ]
-				},
-				{
-					model: user_details,
-					required: true
-				}
-			]
-		    })
-			.then(function(details) {
-			console.log('details are' +JSON.stringify(details));
-			for(var j in details)
-			{
-				jsonTemp.push(details[j]);
-			}
-			console.log('after pushing are' +JSON.stringify(jsonTemp));
-			resolve();
-		   })
-		}
-		console.log('came here');
-		for(var k in jsonTemp)
-		{
-			console.log('enetered inside loop');
-			responseJson.jsonArray.push(jsonTemp[k]);
-		}
-		console.log('just before sending' +JSON.stringify(responseJson));
-		res.status(200).send(responseJson);
-	})
-    .catch(error => res.status(400).send(error)); */
-
-  getsessiondata(sessionid) {
+getsessiondata(sessionid) {
+    //this function formats a session data for particular exercise
     console.log("entered session" + sessionid);
     return new Promise(function(resolve, reject) {
       exercise_details
@@ -285,6 +251,7 @@ module.exports = {
   },
 
   getmaxsessionvalue() {
+    // returns maximun session value 
     return new Promise(function(resolve, reject) {
       exercise_details
         .findAll({
@@ -297,6 +264,7 @@ module.exports = {
   },
   formatdata(details, res) {
     try {
+      //format the details to respond to the user
       const responsejsontemp = [];
       for (var j in details) {
         var jsonTemp = {
@@ -348,6 +316,7 @@ module.exports = {
       console.log(error);
     }
   },
+  //functions returns a new exercise feed according to the sessions
   getnewexercisefeed(req, res)
   {
     //get list of people you are following
@@ -381,19 +350,6 @@ module.exports = {
               attributes: [
                 [Sequelize.fn("DISTINCT", Sequelize.col("SessionId")), "SessionId"]
               ]
-              /*include: [
-                {
-                  model: user_details,
-                  required: true
-                },
-                {
-                  model: workout_details,
-                  include: [category_details],
-                  required: true
-                }
-              ],
-              order: [["createdAt", "DESC"]],
-              limit: 50 */
             })
             .then(function(exercise_detailsNew) {
               const jsonTemp = [];
@@ -407,8 +363,6 @@ module.exports = {
       
               results.then(data => res.status(200).send(data));
             });
-            //.then(details => module.exports.formatdata(details, res))
-            //.catch(error => res.status(200).send(error));
         } else if (
           follower_details.length >= 100 &&
           follower_details.length <= 200
@@ -429,16 +383,23 @@ module.exports = {
                     .toDate()
                 }
               },
-              include: [
-                {
-                  model: user_details
-                }
-              ],
-              order: [["createdAt", "DESC"]],
-              limit: 50
+              attributes: [
+                [Sequelize.fn("DISTINCT", Sequelize.col("SessionId")), "SessionId"]
+              ]
+            
             })
-            .then(details => res.status(200).send(details))
-            .catch(error => res.status(200).send(error));
+            .then(function(exercise_detailsNew) {
+              const jsonTemp = [];
+              const promisearray = [];
+              for (var i in exercise_detailsNew) {
+                promisearray.push(
+                  module.exports.getsessiondata(exercise_detailsNew[i].SessionId)
+                );
+              }
+              var results = Promise.all(promisearray); // pass array of promises
+      
+              results.then(data => res.status(200).send(data));
+            });
         } else {
           exercise_details
             .findAll({
@@ -456,19 +417,65 @@ module.exports = {
                     .toDate()
                 }
               },
-              include: [
-                {
-                  model: user_details
-                }
-              ],
-              order: [["createdAt", "DESC"]],
-              limit: 50
+              
             })
-            .then(details => res.status(200).send(details))
-            .catch(error => res.status(200).send(error));
+            attributes: [
+              [Sequelize.fn("DISTINCT", Sequelize.col("SessionId")), "SessionId"]
+            ]
+            .then(function(exercise_detailsNew) {
+              const jsonTemp = [];
+              const promisearray = [];
+              for (var i in exercise_detailsNew) {
+                promisearray.push(
+                  module.exports.getsessiondata(exercise_detailsNew[i].SessionId)
+                );
+              }
+              var results = Promise.all(promisearray); // pass array of promises
+      
+              results.then(data => res.status(200).send(data));
+            });
         }
       })
       .catch(error => res.status(200).send(error));
+  },
+  testlist()
+  {
+  	for(var i in exercise_detailsNew)
+		{
+			console.log('enetered here' +exercise_detailsNew);
+			var sessionid = exercise_detailsNew[i].SessionId;
+			exercise_details.findAll({
+		    where: { SessionId : sessionid }, 
+			include: [
+				{
+				model: workout_details,
+				required: true
+				},
+				{
+					model: user_details,
+					required: true
+				}
+			]
+		    })
+			.then(function(details) {
+			console.log('details are' +JSON.stringify(details));
+			for(var j in details)
+			{
+				jsonTemp.push(details[j]);
+			}
+			console.log('after pushing are' +JSON.stringify(jsonTemp));
+			resolve();
+		   })
+		}
+		console.log('came here');
+		for(var k in jsonTemp)
+		{
+			console.log('enetered inside loop');
+			responseJson.jsonArray.push(jsonTemp[k]);
+		}
+		console.log('just before sending' +JSON.stringify(responseJson));
+		res.status(200).send(responseJson);
+
   }
   
 };

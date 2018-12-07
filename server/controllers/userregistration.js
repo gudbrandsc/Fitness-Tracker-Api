@@ -178,9 +178,10 @@ listuserbyname(req, res) {
       res.status(200).send(result.url);
     });
     fs.unlink(filename);
-  }
-};
-/*.find({
+  },
+  testreg(req, res)
+  {
+    find({
 			where: {
 				UserName: req.body.UserName
 			}
@@ -207,4 +208,5 @@ listuserbyname(req, res) {
 		})
 		.catch(error => res.status(200).send(error));
 	 },
-}; */
+};
+
